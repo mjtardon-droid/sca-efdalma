@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f5efe6"/><text x="50" y="58" font-size="30" text-anchor="middle" fill="#4a9fd8" font-family="Georgia,serif">S</text></svg></template>
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#4a9fd8">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+<style>
+  body{margin:0;background:oklch(0.97 0.01 75);}
+  a{color:oklch(0.45 0.09 40);}
+  a:hover{color:oklch(0.35 0.09 40);}
+</style>
+<script src="./image-slot.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+  }
+</script>
+</helmet>
+<div style="min-height:100vh;">
+
+  <div style="position:sticky;top:0;z-index:100;display:flex;justify-content:center;gap:0;background:oklch(0.97 0.01 75 / 0.94);backdrop-filter:blur(6px);border-bottom:1px solid oklch(0.85 0.02 60);">
+    <div style="display:flex;gap:8px;padding:14px 20px;flex-wrap:wrap;justify-content:center;">
+      <div onClick="{{ showInicio }}" style="font-family:Georgia,serif;font-size:14px;letter-spacing:0.08em;padding:10px 22px;border-radius:999px;cursor:pointer;font-weight:700;background:{{ inicioBg }};color:{{ inicioColor }};">Inicio</div>
+      <div onClick="{{ showMapa }}" style="font-family:Georgia,serif;font-size:14px;letter-spacing:0.08em;padding:10px 22px;border-radius:999px;cursor:pointer;font-weight:700;background:{{ mapaBg }};color:{{ mapaColor }};">Mapa de Recorrido</div>
+      <div onClick="{{ showBlog }}" style="font-family:Georgia,serif;font-size:14px;letter-spacing:0.08em;padding:10px 22px;border-radius:999px;cursor:pointer;font-weight:700;background:{{ blogBg }};color:{{ blogColor }};">Blog</div>
+      <a href="https://efdalma.site.agendapro.com/cl/sucursal/11232" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;white-space:nowrap;font-family:Georgia,serif;font-size:14px;letter-spacing:0.03em;padding:10px 24px;border-radius:999px;font-weight:700;background:oklch(0.45 0.09 40);color:white;text-decoration:none;">
+        <span style="white-space:nowrap;">Agendar hora →</span>
+        <span style="white-space:nowrap;font-size:10.5px;font-weight:400;letter-spacing:0.02em;opacity:0.9;">Chile {{ chileTime }} · España {{ spainTime }}</span>
+      </a>
+    </div>
+  </div>
+
+  <div style="display:{{ inicioDisplay }};padding:64px 24px 100px;text-align:center;">
+    <div style="font-family:Georgia,serif;font-size:15px;letter-spacing:0.24em;text-transform:uppercase;color:oklch(0.5 0.06 40);margin-bottom:14px;">Sistema Científico del Alma</div>
+    <div style="font-family:Georgia,serif;font-size:34px;margin-bottom:44px;">El Juego de los Espejos y Fractales del Alma</div>
+
+    <div style="position:relative;width:min(560px,88vw);aspect-ratio:1;margin:0 auto;">
+      <img src="./assets/mandala-4-pilares.png" alt="Mandala de los 4 pilares" style="width:100%;height:100%;border-radius:50%;display:block;" />
+
+      <div onClick="{{ goPillar1 }}" title="Autoconocimiento" style="position:absolute;inset:0;clip-path:polygon(50% 50%, 15% 0%, 85% 0%);cursor:pointer;" style-hover="background:#4a9fd822;"></div>
+      <div onClick="{{ goPillar3 }}" title="Propósito" style="position:absolute;inset:0;clip-path:polygon(50% 50%, 100% 15%, 100% 85%);cursor:pointer;" style-hover="background:#c96e8622;"></div>
+      <div onClick="{{ goPillar2 }}" title="Integridad" style="position:absolute;inset:0;clip-path:polygon(50% 50%, 85% 100%, 15% 100%);cursor:pointer;" style-hover="background:#b9a23a22;"></div>
+      <div onClick="{{ goPillar4 }}" title="Plenitud" style="position:absolute;inset:0;clip-path:polygon(50% 50%, 0% 85%, 0% 15%);cursor:pointer;" style-hover="background:#6fae6f22;"></div>
+    </div>
+
+    <div style="font-size:15px;color:oklch(0.45 0.02 60);max-width:480px;margin:44px auto 0;line-height:1.5;">Tocá un pilar para entrar directo a sus guías, talleres y e-books.</div>
+  </div>
+
+  <div style="display:{{ mapaDisplay }};">
+    <dc-import name="Mapa de Recorrido" pillar-filter="{{ pillarFilter }}" hint-size="100%,3000px"></dc-import>
+  </div>
+  <div style="display:{{ blogDisplay }};">
+    <dc-import name="Blog SCA" hint-size="100%,3000px"></dc-import>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'inicio', now: new Date(), pillarFilter: null };
+
+  componentDidMount() {
+    this._clockTimer = setInterval(() => this.setState({ now: new Date() }), 30000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._clockTimer);
+  }
+
+  renderVals() {
+    const active = '#4a9fd8', activeText = 'white', inactiveBg = 'transparent', inactiveText = 'oklch(0.4 0.02 60)';
+    const isInicio = this.state.view === 'inicio';
+    const isMapa = this.state.view === 'mapa';
+    const isBlog = this.state.view === 'blog';
+    const fmt = (tz) => new Intl.DateTimeFormat('es', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(this.state.now);
+    const chileTime = fmt('America/Santiago');
+    const spainTime = fmt('Europe/Madrid');
+    const goPillar = (name) => this.setState({ view: 'mapa', pillarFilter: name });
+    return {
+      chileTime, spainTime,
+      pillarFilter: this.state.pillarFilter,
+      showInicio: () => this.setState({ view: 'inicio' }),
+      showMapa: () => this.setState({ view: 'mapa', pillarFilter: null }),
+      showBlog: () => this.setState({ view: 'blog' }),
+      goPillar1: () => goPillar('Autoconocimiento'),
+      goPillar2: () => goPillar('Integración'),
+      goPillar3: () => goPillar('Propósito'),
+      goPillar4: () => goPillar('Plenitud'),
+      inicioBg: isInicio ? active : inactiveBg,
+      inicioColor: isInicio ? activeText : inactiveText,
+      mapaBg: isMapa ? active : inactiveBg,
+      mapaColor: isMapa ? activeText : inactiveText,
+      blogBg: isBlog ? active : inactiveBg,
+      blogColor: isBlog ? activeText : inactiveText,
+      inicioDisplay: isInicio ? 'block' : 'none',
+      mapaDisplay: isMapa ? 'block' : 'none',
+      blogDisplay: isBlog ? 'block' : 'none',
+    };
+  }
+}
+
+</script>
+</body>
+</html>
