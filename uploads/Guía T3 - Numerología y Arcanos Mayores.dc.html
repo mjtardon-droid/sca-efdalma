@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #14222B; }
+  ::selection { background: rgba(194,163,94,0.28); }
+  @keyframes efd-spin { to { transform: rotate(360deg); } }
+  @keyframes efd-spin-rev { to { transform: rotate(-360deg); } }
+  @keyframes efd-glow { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: .9; transform: scale(1.04); } }
+  @keyframes efd-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  .efd-section { scroll-margin-top: 96px; }
+  .efd-acc-body { overflow: hidden; transition: height .45s cubic-bezier(.4,0,.2,1), opacity .4s ease; }
+  @media (max-width: 1000px) {
+    .efd-shell { display: block !important; }
+    .efd-side { display: none !important; }
+    .efd-main { max-width: 720px !important; margin: 0 auto !important; padding: 0 26px !important; }
+  }
+  @media (max-width: 560px) {
+    .efd-main { padding: 0 20px !important; }
+    .efd-cover-title { font-size: 64px !important; }
+  }
+  @media print {
+    html, body { background: #fff !important; }
+    .efd-progress, .efd-side, .efd-scrollhint, .efd-acc-chevron { display: none !important; }
+    .efd-shell { display: block !important; }
+    .efd-main { max-width: none !important; margin: 0 !important; padding: 0 0.7in !important; }
+    .efd-cover { height: 100vh !important; min-height: 0 !important; break-after: page; }
+    .efd-section { break-inside: avoid; }
+    .efd-card, .efd-qblock, .efd-concept, .efd-guide, .efd-taller, blockquote { break-inside: avoid; }
+    .efd-acc-body { height: auto !important; opacity: 1 !important; }
+    h1, h2, h3 { break-after: avoid; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none !important; }
+    @page { size: letter; margin: 0.5in 0; }
+  }
+</style>
+</helmet>
+
+<div style="font-family: 'Spectral', Georgia, serif; color: #2B2520; background: #F7F2EA;">
+
+  <div class="efd-progress" style="position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, #7E9A86, #C2A35E, #B98A86); z-index: 90; transition: width .12s linear;"></div>
+
+  <header class="efd-cover" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; padding: 64px 24px; background: radial-gradient(125% 95% at 50% 10%, #F6F1E6 0%, #ECE9DC 48%, #DCE2D4 100%);">
+    <div style="position: absolute; inset: -10%; pointer-events: none; opacity: .5; background: radial-gradient(38% 32% at 18% 22%, rgba(198,138,106,.5), transparent 70%), radial-gradient(34% 30% at 82% 26%, rgba(185,138,134,.45), transparent 70%), radial-gradient(40% 34% at 24% 82%, rgba(126,154,134,.5), transparent 72%), radial-gradient(36% 32% at 80% 80%, rgba(124,147,173,.5), transparent 72%), radial-gradient(30% 24% at 50% 50%, rgba(194,163,94,.35), transparent 70%); filter: blur(8px);"></div>
+    <svg viewBox="0 0 600 600" style="position: absolute; width: min(120vw, 860px); height: min(120vw, 860px); top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: .26; pointer-events: none;" aria-hidden="true">
+      <g fill="none" stroke="#9E8F6C" stroke-width="0.8">
+        <g style="transform-origin: 300px 300px; animation: efd-spin 160s linear infinite;">
+          <circle cx="300" cy="300" r="150"/><circle cx="300" cy="150" r="150"/><circle cx="300" cy="450" r="150"/><circle cx="150" cy="300" r="150"/><circle cx="450" cy="300" r="150"/>
+        </g>
+        <g style="transform-origin: 300px 300px; animation: efd-spin-rev 220s linear infinite;">
+          <rect x="160" y="160" width="280" height="280"/>
+          <rect x="160" y="160" width="280" height="280" transform="rotate(45 300 300)"/>
+          <circle cx="300" cy="300" r="232"/>
+        </g>
+      </g>
+    </svg>
+
+    <div style="position: relative; z-index: 2; letter-spacing: .42em; font-size: 13px; text-transform: uppercase; color: #8C7340; font-family: 'Spectral'; font-weight: 500; margin-bottom: 40px; padding-left: .42em;">Pilar I · Autoconocimiento</div>
+
+    <div style="position: relative; z-index: 2; width: min(64vw, 320px); height: min(64vw, 320px); display: flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+      <div style="position: absolute; inset: -16%; border-radius: 50%; background: radial-gradient(circle, rgba(255,253,247,.95) 0%, rgba(255,250,238,.5) 44%, transparent 72%); animation: efd-glow 7s ease-in-out infinite;"></div>
+      <img src="assets/mandala-pilares.png" alt="Mandala de los cuatro pilares" style="position: relative; width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 8px 40px rgba(0,0,0,.35));">
+    </div>
+
+    <h1 class="efd-cover-title" style="position: relative; z-index: 2; font-family: 'Cormorant Garamond'; font-weight: 600; font-size: clamp(46px, 8vw, 84px); line-height: 1.02; margin: 8px 0 0; color: #2B2520; letter-spacing: .5px; max-width: 800px;">Numerología y Arcanos Mayores</h1>
+    <p style="position: relative; z-index: 2; font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 500; font-size: clamp(22px, 3.4vw, 30px); color: #6E5E45; margin: 14px 0 0;">Un GPS interno para leer los códigos de tu realidad</p>
+
+    <div style="position: relative; z-index: 2; width: 64px; height: 1px; background: rgba(140,115,64,.45); margin: 34px 0 26px;"></div>
+
+    <p style="position: relative; z-index: 2; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: #5F5444; margin: 0; line-height: 1.9;">Guía de Trabajo T3 · Sistema Científico del Alma<br><span style="color:#9A8C7D; letter-spacing:.12em;">María José Tardón García · @efdalma</span></p>
+
+    <div class="efd-scrollhint" style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 2; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #9A8C7D; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <span>Comienza el recorrido</span>
+      <span style="font-size: 16px; animation: efd-glow 2.6s ease-in-out infinite;">⌄</span>
+    </div>
+  </header>
+
+  <div class="efd-shell" style="display: flex; gap: 48px; max-width: 1180px; margin: 0 auto; padding: 0 32px;">
+
+    <aside class="efd-side" style="width: 232px; flex: none; position: sticky; top: 64px; align-self: flex-start; padding: 72px 0 40px;">
+      <div style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 24px; color: #2B2520; margin-bottom: 4px;">Recorrido</div>
+      <div style="width: 28px; height: 1px; background: #C2A35E; margin: 0 0 22px;"></div>
+      <nav style="display: flex; flex-direction: column; gap: 2px;">
+        <a class="efd-nav-link" href="#apertura" data-target="apertura" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">01</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">La pregunta que abre el camino</span>
+        </a>
+        <a class="efd-nav-link" href="#explorar" data-target="explorar" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">02</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">Lo que vas a explorar</span>
+        </a>
+        <a class="efd-nav-link" href="#conceptos" data-target="conceptos" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">03</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">Conceptos clave</span>
+        </a>
+        <a class="efd-nav-link" href="#acciones" data-target="acciones" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">04</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">Guía de acciones</span>
+        </a>
+        <a class="efd-nav-link" href="#recorrido" data-target="recorrido" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">05</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">Vínculo con tu recorrido</span>
+        </a>
+        <a class="efd-nav-link" href="#cierre" data-target="cierre" style="text-decoration: none; display: flex; align-items: baseline; gap: 11px; padding: 9px 6px; color: #9A8C7D; transition: color .2s ease;">
+          <span class="efd-nav-num" style="font-size: 11px; letter-spacing: .1em; opacity: .7;">06</span>
+          <span style="font-family: 'Spectral'; font-size: 14.5px; line-height: 1.3;">Una pregunta para cerrar</span>
+        </a>
+      </nav>
+      <div style="margin-top: 30px; padding-top: 22px; border-top: 1px solid #E4DACA; display: flex; align-items: center; gap: 11px;">
+        <img src="assets/sello-marca.png" alt="" style="width: 40px; height: 40px; object-fit: contain; opacity: .92;">
+        <span style="font-size: 11.5px; line-height: 1.4; color: #9A8C7D;">Espejos y Fractales<br>del Alma</span>
+      </div>
+    </aside>
+
+    <main class="efd-main" style="flex: 1; min-width: 0; max-width: 730px; padding: 72px 0 40px;">
+
+      <section id="apertura" class="efd-section" data-spy="apertura" style="margin-bottom: 92px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+          <span style="font-family: 'Cormorant Garamond'; font-size: 22px; color: #C2A35E;">01</span>
+          <span style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D;">La pregunta que abre el camino</span>
+        </div>
+
+        <blockquote style="margin: 0 0 40px; padding: 0; position: relative;">
+          <div style="font-family: 'Cormorant Garamond'; font-weight: 500; font-style: italic; font-size: clamp(28px, 4.4vw, 40px); line-height: 1.22; color: #2B2520;">¿Qué información tiene mi fecha de nacimiento, mi nombre y mi linaje sobre quién soy, qué vine a aprender y cómo leo los códigos de mi realidad?</div>
+        </blockquote>
+
+        <p style="font-size: 18px; line-height: 1.78; margin: 0 0 22px; color: #3D342B;">Los números y los Arcanos no predicen el destino. Orientan. Son lenguajes del Alma — y como todo lenguaje, necesitan ser aprendidos, no para adivinar lo que viene, sino para comprender en qué ciclo estás y hacia dónde se mueve tu proceso.</p>
+        <p style="font-size: 18px; line-height: 1.78; margin: 0 0 22px; color: #3D342B;">Tu fecha de nacimiento, tu nombre y tus apellidos no son casuales. Portan información sobre las herramientas con que llegaste a la vida, la misión que viniste a cumplir, lo que heredaste de tu linaje y lo que tu alma necesita para sentirse plena. No se trata de creer en la magia de los números — se trata de usarlos como brújula, como un GPS interno que te permite leer tu propia realidad con ojos más lúcidos.</p>
+        <p style="font-size: 18px; line-height: 1.78; margin: 0; color: #3D342B;">Esta guía no te convierte en numérólogo ni en tarotista. Te entrega las herramientas principales para que puedas hacer una primera lectura de tus propios códigos — y esa lectura, aplicada a tu vida cotidiana, puede cambiar la forma en que entiendes todo lo que te ha pasado.</p>
+      </section>
+
+      <section id="explorar" class="efd-section" data-spy="explorar" style="margin-bottom: 92px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+          <span style="font-family: 'Cormorant Garamond'; font-size: 22px; color: #C2A35E;">02</span>
+          <span style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D;">Lo que vas a explorar</span>
+        </div>
+        <h2 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: clamp(34px, 5vw, 48px); line-height: 1.05; margin: 0 0 8px; color: #2B2520;">Cuatro claves para leer tus códigos</h2>
+        <p style="font-size: 15px; color: #9A8C7D; font-style: italic; font-family: 'Cormorant Garamond'; font-size: 19px; margin: 0 0 30px;">Despliega cada umbral para recorrerlo a tu ritmo.</p>
+
+        <div data-acc style="margin-bottom: 14px; border: 1px solid #E4DACA; border-radius: 4px; overflow: hidden; background: #FFFDF8;">
+          <button class="efd-acc-head" data-acc-head style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center; gap: 16px; font-family: inherit;">
+            <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: rgba(126,154,134,.16); border: 1px solid #7E9A86; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; font-size: 17px; color: #5C7765;">i</span>
+            <span style="flex: 1; font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; color: #2B2520;">Tu ciclo de independencia</span>
+            <span class="efd-acc-chevron" style="color: #B6A88F; font-size: 14px; transition: transform .4s ease;">▼</span>
+          </button>
+          <div class="efd-acc-body" data-acc-body>
+            <div style="padding: 0 24px 26px 70px;">
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 18px; color: #3D342B;">Hay un hito que marca el inicio de tus ciclos de vida: la edad a la que dejaste el hogar familiar. Ese número, reducido a un solo dígito, determina la frecuencia con que se repiten tus grandes ciclos de renovación personal. Es el primer puente entre tu historia y los números que la habitan.</p>
+              <div class="efd-qblock" style="position: relative; padding: 22px 24px 22px 64px; background: rgba(126,154,134,.08); border-left: 2px solid #7E9A86; border-radius: 0 4px 4px 0;">
+                <span style="position: absolute; left: 18px; top: 16px; font-family: 'Cormorant Garamond'; font-size: 40px; line-height: 1; color: rgba(126,154,134,.55);">?</span>
+                <div style="font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #5C7765; margin-bottom: 12px;">Preguntas para observar</div>
+                <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 21px; line-height: 1.5; margin: 0; color: #2B2520;">¿A qué edad dejaste el hogar? ¿Desde dónde tomaste esa decisión — desde la necesidad o desde la elección? Si tuvieras que reescribir ese relato desde el aprendizaje, ¿cómo sonaría?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-acc style="margin-bottom: 14px; border: 1px solid #E4DACA; border-radius: 4px; overflow: hidden; background: #FFFDF8;">
+          <button class="efd-acc-head" data-acc-head style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center; gap: 16px; font-family: inherit;">
+            <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: rgba(124,147,173,.16); border: 1px solid #7C93AD; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; font-size: 17px; color: #5C7088;">ii</span>
+            <span style="flex: 1; font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; color: #2B2520;">Los números de tu nombre y tu fecha</span>
+            <span class="efd-acc-chevron" style="color: #B6A88F; font-size: 14px; transition: transform .4s ease;">▼</span>
+          </button>
+          <div class="efd-acc-body" data-acc-body>
+            <div style="padding: 0 24px 26px 70px;">
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 18px; color: #3D342B;">Cada letra de tu nombre tiene un valor numérico. La Tabla de Pitágoras permite calcular tus números personales: el Camino de Vida — tu misión —, el Número del Alma — lo que necesitas para sentirte plena/o —, la herencia paterna y materna que portan tus apellidos, y el Tránsito de Letra que indica la energía del ciclo presente.</p>
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 24px; color: #3D342B;">Cada número tiene dos caras: su expresión en luz — equilibrio, potencia, don — y su expresión en sombra, por exceso o por carencia.</p>
+              <div class="efd-qblock" style="position: relative; padding: 22px 24px 22px 64px; background: rgba(124,147,173,.08); border-left: 2px solid #7C93AD; border-radius: 0 4px 4px 0;">
+                <span style="position: absolute; left: 18px; top: 16px; font-family: 'Cormorant Garamond'; font-size: 40px; line-height: 1; color: rgba(124,147,173,.55);">?</span>
+                <div style="font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #5C7088; margin-bottom: 12px;">Preguntas para observar</div>
+                <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 21px; line-height: 1.5; margin: 0; color: #2B2520;">¿Conoces tu Camino de Vida? Si lo calcularas, ¿qué lectura harías de cómo has vivido esa misión hasta hoy — más desde la luz o más desde la sombra? ¿Qué herencia crees que portan tus apellidos — qué recursos y qué programaciones?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-acc style="margin-bottom: 14px; border: 1px solid #E4DACA; border-radius: 4px; overflow: hidden; background: #FFFDF8;">
+          <button class="efd-acc-head" data-acc-head style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center; gap: 16px; font-family: inherit;">
+            <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: rgba(185,138,134,.18); border: 1px solid #B98A86; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; font-size: 16px; color: #97645F;">iii</span>
+            <span style="flex: 1; font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; color: #2B2520;">El Viaje del Héroe a través de los Arcanos</span>
+            <span class="efd-acc-chevron" style="color: #B6A88F; font-size: 14px; transition: transform .4s ease;">▼</span>
+          </button>
+          <div class="efd-acc-body" data-acc-body>
+            <div style="padding: 0 24px 26px 70px;">
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 18px; color: #3D342B;">Los 22 Arcanos Mayores del Tarot no son cartas de adivinación. En el SCA, son los 22 pasos del Viaje del Héroe — el camino que recorre el alma desde la inocencia del Loco hasta la plenitud del Mundo. Cada arcano es una etapa, una prueba, un aprendizaje.</p>
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 24px; color: #3D342B;">El Loco inicia el viaje sin saber adónde va. El Mago descubre sus herramientas. Los Amantes enfrentan la primera elección libre. La Muerte no es un final — es el duelo del personaje que ya no sirve. La Torre derrumba las máscaras. La Estrella sana. El Mundo es el paraíso recobrado.</p>
+              <div class="efd-qblock" style="position: relative; padding: 22px 24px 22px 64px; background: rgba(185,138,134,.09); border-left: 2px solid #B98A86; border-radius: 0 4px 4px 0;">
+                <span style="position: absolute; left: 18px; top: 16px; font-family: 'Cormorant Garamond'; font-size: 40px; line-height: 1; color: rgba(185,138,134,.6);">?</span>
+                <div style="font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #97645F; margin-bottom: 12px;">Preguntas para observar</div>
+                <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 21px; line-height: 1.5; margin: 0; color: #2B2520;">Si el Viaje del Héroe describe tu proceso actual, ¿en qué etapa sientes que estás? ¿Estás en la Torre — cayendo máscaras? ¿En la Muerte — soltando lo que ya no sirve? ¿En la Estrella — sanando? ¿Cómo vives esa etapa — desde la resistencia o desde la confianza?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-acc style="margin-bottom: 0; border: 1px solid #E4DACA; border-radius: 4px; overflow: hidden; background: #FFFDF8;">
+          <button class="efd-acc-head" data-acc-head style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 22px 24px; display: flex; align-items: center; gap: 16px; font-family: inherit;">
+            <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: rgba(194,163,94,.18); border: 1px solid #C2A35E; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond'; font-size: 15px; color: #927A3F;">iv</span>
+            <span style="flex: 1; font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; color: #2B2520;">Fractales del Alma y el compromiso contigo</span>
+            <span class="efd-acc-chevron" style="color: #B6A88F; font-size: 14px; transition: transform .4s ease;">▼</span>
+          </button>
+          <div class="efd-acc-body" data-acc-body>
+            <div style="padding: 0 24px 26px 70px;">
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 18px; color: #3D342B;">Hay un concepto en el SCA que conecta todo lo anterior con algo más profundo: los Fractales del Alma. La familia se repite como un fractal matemático. Bisabuela, abuela, madre, hija — los patrones se replican a lo largo del linaje, con variaciones, pero con la misma estructura de fondo.</p>
+              <p style="font-size: 17px; line-height: 1.76; margin: 0 0 24px; color: #3D342B;">Cuando abrazas tu historia desde la comprensión — no desde el dolor ni desde la resignación —, no solo te abrazas a ti. Abrazas a toda tu línea ancestral. Y eso no es una metáfora bonita — es un movimiento energético concreto.</p>
+              <div class="efd-qblock" style="position: relative; padding: 22px 24px 22px 64px; background: rgba(194,163,94,.1); border-left: 2px solid #C2A35E; border-radius: 0 4px 4px 0;">
+                <span style="position: absolute; left: 18px; top: 16px; font-family: 'Cormorant Garamond'; font-size: 40px; line-height: 1; color: rgba(194,163,94,.65);">?</span>
+                <div style="font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #927A3F; margin-bottom: 12px;">Preguntas para observar</div>
+                <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 21px; line-height: 1.5; margin: 0; color: #2B2520;">¿Puedes ver el fractal en tu linaje — esos patrones que se repiten de generación en generación? ¿Qué cambiaría si en lugar de luchar contra esos patrones los abrazaras desde la comprensión? ¿Estás dispuesto/a a hacer un compromiso contigo mismo/a — no como promesa, sino como decisión?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conceptos" class="efd-section" data-spy="conceptos" style="margin-bottom: 92px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+          <span style="font-family: 'Cormorant Garamond'; font-size: 22px; color: #C2A35E;">03</span>
+          <span style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D;">Conceptos clave</span>
+        </div>
+        <h2 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: clamp(34px, 5vw, 48px); line-height: 1.05; margin: 0 0 32px; color: #2B2520;">Cinco claves de tu brújula interior</h2>
+
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div class="efd-concept" style="display: flex; gap: 22px; padding: 26px 4px; border-bottom: 1px solid #EAE0CF;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 500; font-size: 46px; line-height: .9; color: #C9BBA0; flex: none; width: 58px;">01</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 26px; margin: 4px 0 8px; color: #2B2520;">Los números como GPS interno</h3>
+              <p style="font-size: 16.5px; line-height: 1.72; margin: 0; color: #4A4036;">No predicen el destino. Orientan. Son herramientas para leer los ciclos, las herramientas y la misión con que llegaste a la vida.</p>
+            </div>
+          </div>
+          <div class="efd-concept" style="display: flex; gap: 22px; padding: 26px 4px; border-bottom: 1px solid #EAE0CF;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 500; font-size: 46px; line-height: .9; color: #C9BBA0; flex: none; width: 58px;">02</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 26px; margin: 4px 0 8px; color: #2B2520;">Luz y sombra del número</h3>
+              <p style="font-size: 16.5px; line-height: 1.72; margin: 0; color: #4A4036;">Cada número tiene expresión equilibrada (luz) y desequilibrada (sombra — por exceso o por carencia). Conocer la sombra no es una condena — es información para equilibrar.</p>
+            </div>
+          </div>
+          <div class="efd-concept" style="display: flex; gap: 22px; padding: 26px 4px; border-bottom: 1px solid #EAE0CF;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 500; font-size: 46px; line-height: .9; color: #C9BBA0; flex: none; width: 58px;">03</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 26px; margin: 4px 0 8px; color: #2B2520;">El Viaje del Héroe</h3>
+              <p style="font-size: 16.5px; line-height: 1.72; margin: 0; color: #4A4036;">Los 22 Arcanos Mayores narran el camino del alma. Permiten ubicar en qué etapa estás y qué aprendizaje corresponde a ese momento.</p>
+            </div>
+          </div>
+          <div class="efd-concept" style="display: flex; gap: 22px; padding: 26px 4px; border-bottom: 1px solid #EAE0CF;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 500; font-size: 46px; line-height: .9; color: #C9BBA0; flex: none; width: 58px;">04</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 26px; margin: 4px 0 8px; color: #2B2520;">Fractales del Alma</h3>
+              <p style="font-size: 16.5px; line-height: 1.72; margin: 0; color: #4A4036;">La familia se repite como un fractal. Los patrones del linaje se replican con variaciones. Abrazar la historia propia abraza toda la línea ancestral.</p>
+            </div>
+          </div>
+          <div class="efd-concept" style="display: flex; gap: 22px; padding: 26px 4px;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 500; font-size: 46px; line-height: .9; color: #C9BBA0; flex: none; width: 58px;">05</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 26px; margin: 4px 0 8px; color: #2B2520;">El compromiso simbólico</h3>
+              <p style="font-size: 16.5px; line-height: 1.72; margin: 0; color: #4A4036;">Casarte contigo mismo/a. El anillo simboliza que ya no estás disponible para traicionarte. No es un acto moral — es un acto de fidelidad interna.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="acciones" class="efd-section" data-spy="acciones" style="margin-bottom: 92px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+          <span style="font-family: 'Cormorant Garamond'; font-size: 22px; color: #C2A35E;">04</span>
+          <span style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D;">Guía de acciones</span>
+        </div>
+        <h2 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: clamp(34px, 5vw, 48px); line-height: 1.05; margin: 0 0 32px; color: #2B2520;">Del entendimiento a la práctica</h2>
+
+        <div style="display: grid; gap: 18px;">
+          <div class="efd-card" style="background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; padding: 28px 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <span style="width: 26px; height: 26px; border-radius: 50%; background: #7E9A86; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-family: 'Spectral'; font-weight: 600;">1</span>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; margin: 0; color: #2B2520;">Tu ciclo de independencia</h3>
+            </div>
+            <p style="font-size: 16.5px; line-height: 1.74; margin: 0; color: #4A4036;">Calcula a qué edad dejaste el hogar familiar. Reduce ese número a un solo dígito. Luego revisa tu vida: ¿encuentras ciclos de renovación que se repitan con esa frecuencia? Reescribe el relato de tu partida desde el aprendizaje, no desde el dolor.</p>
+          </div>
+          <div class="efd-card" style="background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; padding: 28px 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <span style="width: 26px; height: 26px; border-radius: 50%; background: #B98A86; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-family: 'Spectral'; font-weight: 600;">2</span>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; margin: 0; color: #2B2520;">Dormir con un arcano</h3>
+            </div>
+            <p style="font-size: 16.5px; line-height: 1.74; margin: 0; color: #4A4036;">Elige un Arcano Mayor que te llame la atención — no importa cuál. Visualízalo o imprímelo y ponlo junto a tu cama antes de dormir. No le pidas nada. Solo déjalo ahí. Al despertar, observa qué soñaste o qué sentiste. El cerebro no distingue entre realidad y ficción: el símbolo trabaja sin que el ego lo supervise.</p>
+          </div>
+          <div class="efd-card" style="background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; padding: 28px 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <span style="width: 26px; height: 26px; border-radius: 50%; background: #C2A35E; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-family: 'Spectral'; font-weight: 600;">3</span>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; margin: 0; color: #2B2520;">Tu protocolo interno</h3>
+            </div>
+            <p style="font-size: 16.5px; line-height: 1.74; margin: 0; color: #4A4036;">Identifica al menos tres prácticas concretas que son tuyas — no las de un libro, no las de un gurú, las tuyas — para salir de los estados difíciles y activar el aprendizaje. Puede ser meditar, caminar, pintar, bailar, escribir, cocinar. Lo que sea. Pero que sea tuyo. El autoconocimiento es comida gourmet, no hay receta única.</p>
+          </div>
+          <div class="efd-card" style="background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; padding: 28px 30px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <span style="width: 26px; height: 26px; border-radius: 50%; background: #7C93AD; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-family: 'Spectral'; font-weight: 600;">4</span>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 25px; margin: 0; color: #2B2520;">El compromiso</h3>
+            </div>
+            <p style="font-size: 16.5px; line-height: 1.74; margin: 0; color: #4A4036;">Cuando estés lista/o — sin prisa, sin presión —, imagina un anillo en tu mano. Intenciona en voz alta tu compromiso contigo mismo/a. No tiene que ser solemne. Tiene que ser real. Lo que estás diciendo es: elijo ser leal a mí antes que a cualquier mandato heredado.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="recorrido" class="efd-section" data-spy="recorrido" style="margin-bottom: 92px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+          <span style="font-family: 'Cormorant Garamond'; font-size: 22px; color: #C2A35E;">05</span>
+          <span style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D;">Vínculo con tu recorrido</span>
+        </div>
+        <h2 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: clamp(34px, 5vw, 48px); line-height: 1.05; margin: 0 0 12px; color: #2B2520;">Esta guía es una puerta</h2>
+        <p style="font-size: 17px; line-height: 1.7; margin: 0 0 30px; color: #4A4036;">Forma parte del Pilar I · Autoconocimiento. Según lo que esta lectura haya removido en ti, estas guías profundizan el camino:</p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <a class="efd-guide" href="https://www.efdalma.com/autoconocimiento" target="_blank" rel="noopener" style="text-decoration: none; display: flex; gap: 20px; align-items: flex-start; padding: 24px 26px; background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; transition: border-color .2s, transform .2s;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 34px; line-height: 1; color: #7E9A86; flex: none;">01</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 23px; margin: 0 0 5px; color: #2B2520;">Cómo se transmite el trauma sin palabras</h3>
+              <p style="font-size: 15.5px; line-height: 1.6; margin: 0; color: #6B5E52;">Si los Fractales del Alma te conectaron con el dolor del linaje heredado, esta guía explora cómo el trauma viaja de generación en generación.</p>
+            </div>
+          </a>
+          <a class="efd-guide" href="https://www.efdalma.com/autoconocimiento" target="_blank" rel="noopener" style="text-decoration: none; display: flex; gap: 20px; align-items: flex-start; padding: 24px 26px; background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; transition: border-color .2s, transform .2s;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 34px; line-height: 1; color: #7C93AD; flex: none;">02</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 23px; margin: 0 0 5px; color: #2B2520;">Terminar con la compulsión de sanar</h3>
+              <p style="font-size: 15.5px; line-height: 1.6; margin: 0; color: #6B5E52;">Si el Viaje del Héroe te mostró que estás en una etapa de derrumbe o transformación, esta guía te ayudará a entender que la urgencia de arreglarlo todo es parte del problema.</p>
+            </div>
+          </a>
+          <a class="efd-guide" href="https://www.efdalma.com/autoconocimiento" target="_blank" rel="noopener" style="text-decoration: none; display: flex; gap: 20px; align-items: flex-start; padding: 24px 26px; background: #FFFDF8; border: 1px solid #E4DACA; border-radius: 6px; transition: border-color .2s, transform .2s;">
+            <span style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 34px; line-height: 1; color: #B98A86; flex: none;">04</span>
+            <div>
+              <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 23px; margin: 0 0 5px; color: #2B2520;">Los pecados capitales que nadie quiere reconocer en sí mismo</h3>
+              <p style="font-size: 15.5px; line-height: 1.6; margin: 0; color: #6B5E52;">Si el trabajo con los números activó impulsos que normalmente juzgas, esta guía te invita a mirar esos impulsos como información, no como defectos.</p>
+            </div>
+          </a>
+        </div>
+
+        <div style="margin-top: 34px; text-align: center; padding: 40px 30px; border-radius: 8px; background: radial-gradient(120% 140% at 50% 0%, #2C4548, #182A31); color: #F7F2EA;">
+          <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 24px; margin: 0 0 22px; color: #E7D8B9;">Accede a todas las guías y e-books del Pilar I completo</p>
+          <a href="https://www.efdalma.com/autoconocimiento" target="_blank" rel="noopener" style="display: inline-block; text-decoration: none; padding: 14px 34px; border: 1px solid #C2A35E; border-radius: 999px; color: #FBF6EC; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; transition: background .2s;">Acceder al Pilar I →</a>
+          <p style="font-size: 13px; letter-spacing: .04em; color: #9FB0AE; margin: 22px 0 0;">www.efdalma.com/autoconocimiento</p>
+        </div>
+
+        <div class="efd-taller" style="position: relative; margin-top: 18px; overflow: hidden; padding: 32px 34px; border-radius: 8px; background: #1B2E35; color: #F7F2EA;">
+          <div style="position: absolute; right: -40px; top: -40px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(194,163,94,.4), transparent 70%); pointer-events: none;"></div>
+          <div style="position: relative;">
+            <div style="font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: #C2A35E; margin-bottom: 10px;">Experiencia grupal</div>
+            <h3 style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 28px; margin: 0 0 8px;">Taller 3 · Numerología y Arcanos Mayores</h3>
+            <p style="font-size: 15.5px; line-height: 1.65; margin: 0; color: #C7D2D0; max-width: 460px;">Vive este trabajo en grupo, con el acompañamiento de Pepa. Consulta las próximas fechas en <span style="color: #E7D8B9;">@efdalma</span>.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="cierre" class="efd-section" data-spy="cierre" style="margin-bottom: 40px;">
+        <div style="text-align: center; padding: 30px 0 10px;">
+          <div style="font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: #9A8C7D; margin-bottom: 28px;">Una pregunta para cerrar</div>
+          <div style="font-family: 'Cormorant Garamond'; font-size: 42px; line-height: 1; color: #C2A35E; margin-bottom: 18px;">✶</div>
+          <p style="font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 500; font-size: clamp(30px, 5vw, 46px); line-height: 1.22; margin: 0 auto; max-width: 620px; color: #2B2520;">Si tus números y tu linaje te dieron las herramientas para cumplir una misión, ¿cuál sería esa misión — y qué te impide empezar hoy?</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer style="margin-top: 40px; background: radial-gradient(120% 100% at 50% 0%, #233A3E, #122029); color: #C7D2D0; padding: 64px 24px 56px; text-align: center;">
+    <img src="assets/sello-marca.png" alt="Espejos y Fractales del Alma" style="width: 96px; height: 96px; object-fit: contain; margin-bottom: 22px; filter: drop-shadow(0 4px 20px rgba(0,0,0,.4));">
+    <div style="font-family: 'Cormorant Garamond'; font-weight: 600; font-size: 30px; color: #FBF6EC; margin-bottom: 4px;">Espejos y Fractales del Alma</div>
+    <div style="font-family: 'Cormorant Garamond'; font-style: italic; font-size: 19px; color: #C2A35E; margin-bottom: 22px;">Sistema Científico del Alma</div>
+    <p style="font-size: 14px; line-height: 1.9; letter-spacing: .04em; margin: 0 0 24px; color: #AFBEBC;">María José Tardón García<br>www.efdalma.com/autoconocimiento · @efdalma<br>YouTube: Espejos y Fractales del Alma</p>
+    <div style="width: 60px; height: 1px; background: rgba(194,163,94,.5); margin: 0 auto 22px;"></div>
+    <p style="font-size: 12px; letter-spacing: .06em; color: #7E908E; margin: 0; line-height: 1.7;">Guía de Trabajo T3 · Numerología y Arcanos Mayores · Pilar I Autoconocimiento<br>© 2026 Espejos y Fractales del Alma. Todos los derechos reservados.</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document;
+    // Accordions: open by default, toggle on click
+    const accs = Array.from(root.querySelectorAll('[data-acc]'));
+    accs.forEach((acc) => {
+      const head = acc.querySelector('[data-acc-head]');
+      const body = acc.querySelector('[data-acc-body]');
+      const chev = acc.querySelector('.efd-acc-chevron');
+      if (!head || !body) return;
+      // start open
+      body.style.height = body.scrollHeight + 'px';
+      acc._open = true;
+      const setOpen = (open, animate) => {
+        acc._open = open;
+        if (chev) chev.style.transform = open ? 'rotate(0deg)' : 'rotate(-90deg)';
+        if (!animate) { body.style.height = open ? 'auto' : '0px'; body.style.opacity = open ? '1' : '0'; return; }
+        if (open) {
+          body.style.opacity = '1';
+          body.style.height = body.scrollHeight + 'px';
+          setTimeout(() => { if (acc._open) body.style.height = 'auto'; }, 480);
+        } else {
+          body.style.height = body.scrollHeight + 'px';
+          body.offsetHeight; // reflow
+          body.style.opacity = '0';
+          body.style.height = '0px';
+        }
+      };
+      head.addEventListener('click', () => setOpen(!acc._open, true));
+    });
+
+    // Progress bar + scroll-spy (direct DOM, no setState)
+    const bar = root.querySelector('.efd-progress');
+    const links = Array.from(root.querySelectorAll('.efd-nav-link'));
+    const sections = Array.from(root.querySelectorAll('[data-spy]'));
+    const activate = (id) => {
+      links.forEach((l) => {
+        const on = l.getAttribute('data-target') === id;
+        l.style.color = on ? '#2B2520' : '#9A8C7D';
+        l.style.fontWeight = on ? '500' : '400';
+        const num = l.querySelector('.efd-nav-num');
+        if (num) { num.style.color = on ? '#C2A35E' : '#9A8C7D'; num.style.opacity = on ? '1' : '0.7'; }
+      });
+    };
+    this._onScroll = () => {
+      const st = window.scrollY || document.documentElement.scrollTop;
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar) bar.style.width = (h > 0 ? Math.min(100, (st / h) * 100) : 0) + '%';
+      let current = sections.length ? sections[0].getAttribute('data-spy') : null;
+      const probe = st + window.innerHeight * 0.32;
+      sections.forEach((s) => { if (s.offsetTop <= probe) current = s.getAttribute('data-spy'); });
+      if (current && current !== this._cur) { this._cur = current; activate(current); }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll, { passive: true });
+    this._onScroll();
+  }
+  componentWillUnmount() {
+    if (this._onScroll) {
+      window.removeEventListener('scroll', this._onScroll);
+      window.removeEventListener('resize', this._onScroll);
+    }
+  }
+  renderVals() { return {}; }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Guía T3 - Numerología y Arcanos Mayores";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: ≥2 visible non-fixed children, each with authored px width
+  // AND height, all within ±2px of each other. Off unless the page opts in
+  // via data-om-multi-frame on the stop element — guards against card grids
+  // and pricing tables that match the geometry but aren't separate canvases.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var cands = [];
+    for (var k = 0; k < el.children.length; k++) {
+      var ch = el.children[k];
+      var cs; try { cs = getComputedStyle(ch); } catch (e) { continue; }
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') continue;
+      var rc = rectOf(ch);
+      if (rc.width < 2 || rc.height < 2) continue;
+      if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+      cands.push(rc);
+    }
+    if (cands.length >= 2) {
+      var w0 = cands[0].width, h0 = cands[0].height, ok = true;
+      for (var q = 1; q < cands.length; q++)
+        if (Math.abs(cands[q].width - w0) > 2 || Math.abs(cands[q].height - h0) > 2) ok = false;
+      if (ok) return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>
