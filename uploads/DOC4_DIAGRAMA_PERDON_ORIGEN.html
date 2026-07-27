@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>El Perdón como Operador de Origen · DOC 4 · SCA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0c0c14;color:#e8e4f0;font-family:'Cormorant Garamond',serif;padding:24px;min-height:100vh}
+h1{font-size:22px;font-weight:600;color:#c8b8f0;letter-spacing:0.02em;margin-bottom:4px}
+.sub{font-size:13px;color:#7070a0;font-style:italic;margin-bottom:4px}
+.registro{font-size:12px;color:#a0906a;background:#1a1508;border:1px solid #a0906a44;border-radius:6px;padding:8px 14px;margin-bottom:16px;line-height:1.7}
+.registro b{color:#d4a84a}
+.wrap{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+canvas{border-radius:10px;background:#0a0a12;flex-shrink:0}
+.panel{flex:1;min-width:220px;display:flex;flex-direction:column;gap:10px}
+.card{background:#12121e;border:1px solid #2a2a40;border-radius:8px;padding:12px 14px}
+.card-title{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+.card p{font-size:13px;color:#b0a8c8;line-height:1.7}
+.card p b{color:#e0d8f8;font-weight:600}
+.card p i{color:#9090c0}
+.eq{font-family:'DM Mono',monospace;font-size:12px;background:#0a0a18;border:1px solid #3a3a60;border-radius:6px;padding:10px 12px;line-height:2;color:#c0b8e8}
+.eq .highlight{color:#50e890}
+.eq .purple{color:#c090f8}
+.eq .red{color:#f08070}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font-size:12px;color:#7070a0}
+.ctrl-row label{display:flex;align-items:center;gap:6px}
+input[type=range]{accent-color:#8060c0;width:80px}
+.val{color:#c0b0e8;font-weight:600;font-family:'DM Mono',monospace;min-width:28px}
+select{background:#12121e;color:#b0a8c8;border:1px solid #2a2a40;border-radius:4px;padding:2px 6px;font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:#8080a0}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.fase-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-family:'DM Mono',monospace;margin-top:4px}
+</style>
+</head>
+<body>
+
+<h1>El Perdón como Operador de Origen · DOC 4 · SCA</h1>
+<div class="sub">Insight emergido en sesión con Rocío Araya · 27 de marzo de 2026 · María José Tardón García · @efdalma</div>
+
+<div class="registro">
+  <b>📌 Registro histórico:</b> La comprensión del salto cuántico como <i>reconexión con la proyección ya existente en el otro cuadrante</i> — y no como salto entre cuadrantes — fue digerida por la facilitadora el 27 de marzo de 2026 durante la sesión con Rocío Araya. El Perdón opera matemáticamente como P(t*) : ωt* → 0, devolviendo la función al origen (0,0,0) desde donde puede reorientarse hacia cualquier octante.
+</div>
+
+<div class="wrap">
+
+<canvas id="c" width="520" height="480"></canvas>
+
+<div class="panel">
+
+  <div class="card">
+    <div class="card-title" style="color:#8060c0">Ecuación maestra</div>
+    <div class="eq">
+      F(θ,φ,t) = A·e<sup>iωt</sup>·[sin(nθ)·cos(mφ) + i·cos(nθ)·sin(mφ)]<br>
+      <span class="highlight">P(t*) : ωt* → 0  ⟹  F → (0,0,0)</span><br>
+      <span class="purple">Perdón = operador de retorno al origen</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:#d09030">Fase actual del sistema</div>
+    <p id="faseDesc">Selecciona una fase para ver su descripción.</p>
+    <div id="faseBadge" class="fase-badge" style="background:#1a1508;color:#d09030">— sin selección —</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:#4a9060">Los 3 movimientos del Perdón</div>
+    <p><b>1 · Reconocimiento</b> — ver la función desde fuera del octante. Dejar de identificarse con una sola cara del patrón.</p>
+    <p style="margin-top:6px"><b>2 · Acción correctiva</b> — ω → 0. El arrepentimiento genuino reduce la rotación compulsiva del programa.</p>
+    <p style="margin-top:6px"><b>3 · Reconexión desde el origen</b> — F(θ,φ,t*) = 0. Desde ahí la función elige hacia qué cuadrante proyectarse. Ese es el salto cuántico.</p>
+  </div>
+
+  <div class="ctrl-row">
+    <label>Programa n: <input type="range" min="1" max="5" value="2" step="1" id="sn" oninput="sn=+this.value;document.getElementById('snv').textContent=sn"> <span class="val" id="snv">2</span></label>
+    <label>Parentesco m: <input type="range" min="1" max="5" value="3" step="1" id="sm" oninput="sm=+this.value;document.getElementById('smv').textContent=sm"> <span class="val" id="smv">3</span></label>
+    <label>Perdón ω→0: <input type="range" min="0" max="1" value="1" step="0.01" id="sw" oninput="sw=+this.value;document.getElementById('swv').textContent=(sw).toFixed(2);updateFase()"> <span class="val" id="swv">1.00</span></label>
+    <label>Vista: <select onchange="setView(this.value)"><option value="iso">3D isométrica</option><option value="top">Plano XY</option><option value="front">Plano XZ</option></select></label>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="dot" style="background:#e86030"></div>Fractal directo (oct. +)</div>
+    <div class="leg"><div class="dot" style="background:#3080e8"></div>Fractal invertido (oct. -)</div>
+    <div class="leg"><div class="dot" style="background:#30c870"></div>Origen · Perdón (0,0,0)</div>
+    <div class="leg"><div class="dot" style="background:#e8a030"></div>Función f(x)</div>
+    <div class="leg"><div class="dot" style="background:#c060f0"></div>Proyección en plano</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const cvs=document.getElementById('c');
+const ctx=cvs.getContext('2d');
+let sn=2,sm=3,sw=1.0;
+let rotX=0.38,rotY=0.70;
+let drag=false,lx=0,ly=0;
+let t=0,af=null;
+let viewMode='iso';
+
+const fases=[
+  {min:0.85,max:1,label:"Programa activo — Drama",color:"#e06030",bg:"#2a0f08",desc:"La función gira sobre sí misma. El patrón se repite. La traición como bucle cerrado. Rocío antes de la sesión: el personaje urgente, el ocultamiento, la traición como identidad."},
+  {min:0.5,max:0.85,label:"Reconocimiento — Ironía",color:"#c090f8",bg:"#1a0a2a",desc:"La persona empieza a ver la función desde fuera. Ya no se identifica completamente con el patrón. La traición empieza a verse desde múltiples ángulos. Aparece la observadora interna."},
+  {min:0.15,max:0.5,label:"Acción correctiva — Purga",color:"#d0a030",bg:"#1a1508",desc:"ω reduce. El arrepentimiento genuino opera. La acción correctiva — no solo la intención — hace caer la velocidad de rotación del programa. La función se acerca al origen."},
+  {min:0,max:0.15,label:"Origen alcanzado — Perdón",color:"#30c870",bg:"#081a10",desc:"F(θ,φ,t*) ≈ 0. La función está en el origen. No hay polaridad activa. El Perdón está completo. Desde aquí la función puede reorientarse — elegir conscientemente hacia qué octante proyectarse. Salto cuántico."},
+];
+
+function updateFase(){
+  const v=sw;
+  const f=fases.find(f=>v>=f.min&&v<=f.max)||fases[3];
+  document.getElementById('faseDesc').textContent=f.desc;
+  const b=document.getElementById('faseBadge');
+  b.textContent=f.label;
+  b.style.background=f.bg;
+  b.style.color=f.color;
+  b.style.border=`1px solid ${f.color}44`;
+}
+updateFase();
+
+cvs.addEventListener('mousedown',e=>{drag=true;lx=e.clientX;ly=e.clientY;});
+cvs.addEventListener('mousemove',e=>{if(!drag)return;rotY+=(e.clientX-lx)*0.009;rotX+=(e.clientY-ly)*0.009;lx=e.clientX;ly=e.clientY;});
+cvs.addEventListener('mouseup',()=>drag=false);
+cvs.addEventListener('mouseleave',()=>drag=false);
+
+function setView(v){
+  viewMode=v;
+  if(v==='iso'){rotX=0.38;rotY=0.70;}
+  else if(v==='top'){rotX=Math.PI/2;rotY=0;}
+  else if(v==='front'){rotX=0;rotY=0;}
+}
+
+function rot3(x,y,z){
+  let y1=y*Math.cos(rotX)-z*Math.sin(rotX);
+  let z1=y*Math.sin(rotX)+z*Math.cos(rotX);
+  let x2=x*Math.cos(rotY)+z1*Math.sin(rotY);
+  let z2=-x*Math.sin(rotY)+z1*Math.cos(rotY);
+  return[x2,y1,z2];
+}
+function proj(x,y,z){
+  const R=rot3(x,y,z);
+  const s=190/(3+R[2]);
+  return[cvs.width/2+R[0]*s, cvs.height/2-R[1]*s, R[2]];
+}
+
+function fp(theta,phi){
+  const phase=t*sw*0.5;
+  const A=0.75*sw+(1-sw)*0.05;
+  const real=A*Math.sin(sn*theta)*Math.cos(sm*phi);
+  const imag=A*Math.cos(sn*theta)*Math.sin(sm*phi);
+  const x=real*Math.cos(phase)-imag*Math.sin(phase);
+  const y=real*Math.sin(phase)+imag*Math.cos(phase);
+  const z=A*Math.sin((sn+sm)*theta*0.5)*Math.cos(phi);
+  return[x,y,z];
+}
+
+function draw(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  ctx.fillStyle='#0a0a12';
+  ctx.fillRect(0,0,cvs.width,cvs.height);
+
+  // Ejes
+  [[[0,0,0],[1.35,0,0],'X'],[[0,0,0],[0,1.35,0],'Y'],[[0,0,0],[0,0,1.35],'Z'],
+   [[0,0,0],[-1.35,0,0],''],[[0,0,0],[0,-1.35,0],''],[[0,0,0],[0,0,-1.35],'']].forEach(([s,e,l])=>{
+    const ps=proj(...s),pe=proj(...e);
+    ctx.strokeStyle='rgba(150,130,200,0.25)';ctx.lineWidth=0.6;ctx.setLineDash([4,5]);
+    ctx.beginPath();ctx.moveTo(ps[0],ps[1]);ctx.lineTo(pe[0],pe[1]);ctx.stroke();
+    ctx.setLineDash([]);
+    if(l){ctx.fillStyle='rgba(160,140,200,0.45)';ctx.font='11px DM Mono,monospace';ctx.fillText(l,pe[0]+3,pe[1]+3);}
+  });
+
+  // Superficie fractal directa + invertida
+  const steps=48;
+  const polys=[];
+  for(let i=0;i<steps;i++){
+    for(let j=0;j<steps;j++){
+      const t0=(i/steps)*2*Math.PI, t1=((i+1)/steps)*2*Math.PI;
+      const p0=(j/steps)*Math.PI, p1=((j+1)/steps)*Math.PI;
+      const pts=[[t0,p0],[t1,p0],[t1,p1],[t0,p1]].map(([th,ph])=>fp(th,ph));
+      const avgZ=pts.reduce((s,p)=>s+rot3(...p)[2],0)/4;
+      polys.push({pts,avgZ,inv:false});
+      const ptsi=pts.map(p=>p.map(v=>-v));
+      const avgZi=ptsi.reduce((s,p)=>s+rot3(...p)[2],0)/4;
+      polys.push({pts:ptsi,avgZ:avgZi,inv:true});
+    }
+  }
+  polys.sort((a,b)=>a.avgZ-b.avgZ);
+  polys.forEach(({pts,inv})=>{
+    const pr=pts.map(p=>proj(...p));
+    const cx=pts.reduce((s,p)=>s+p[0],0)/4;
+    const cy=pts.reduce((s,p)=>s+p[1],0)/4;
+    const cz=pts.reduce((s,p)=>s+p[2],0)/4;
+    const inten=Math.min(1,Math.sqrt(cx*cx+cy*cy+cz*cz)/0.75);
+    ctx.beginPath();ctx.moveTo(pr[0][0],pr[0][1]);
+    pr.slice(1).forEach(p=>ctx.lineTo(p[0],p[1]));ctx.closePath();
+    if(!inv){ctx.fillStyle=`rgba(232,96,48,${0.08+inten*0.18})`;ctx.strokeStyle=`rgba(232,96,48,${0.15+inten*0.1})`;}
+    else{ctx.fillStyle=`rgba(48,128,232,${0.06+inten*0.13})`;ctx.strokeStyle=`rgba(48,128,232,${0.1+inten*0.08})`;}
+    ctx.lineWidth=0.25;ctx.fill();ctx.stroke();
+  });
+
+  // Función f(x) — la traición — curva que pasa por el origen
+  const curve=[];
+  for(let i=0;i<=80;i++){
+    const theta=(i/80)*2*Math.PI-Math.PI;
+    const [fx,fy,fz]=fp(theta,Math.PI/2);
+    curve.push(proj(fx,fy,fz));
+  }
+  ctx.beginPath();ctx.moveTo(curve[0][0],curve[0][1]);
+  curve.forEach(p=>ctx.lineTo(p[0],p[1]));
+  ctx.strokeStyle='rgba(232,160,48,0.9)';ctx.lineWidth=2;ctx.setLineDash([]);ctx.stroke();
+
+  // Proyección en plano (plano azul del boceto)
+  const planePts=[];
+  for(let i=0;i<=40;i++){
+    const theta=(i/40)*Math.PI;
+    const [fx,fy,fz]=fp(theta,Math.PI/4);
+    planePts.push(proj(fx,fy,fz));
+  }
+  for(let i=40;i>=0;i--){
+    const theta=(i/40)*Math.PI;
+    const [fx,fy,fz]=fp(theta,Math.PI/3);
+    planePts.push(proj(fx,fy,fz));
+  }
+  ctx.beginPath();ctx.moveTo(planePts[0][0],planePts[0][1]);
+  planePts.forEach(p=>ctx.lineTo(p[0],p[1]));ctx.closePath();
+  ctx.fillStyle='rgba(130,80,240,0.10)';ctx.strokeStyle='rgba(130,80,240,0.35)';
+  ctx.lineWidth=0.8;ctx.fill();ctx.stroke();
+
+  // Flecha roja circular (el bucle del programa) — arriba
+  const r=55, cx2=cvs.width/2-60, cy2=80;
+  ctx.beginPath();
+  ctx.arc(cx2,cy2,r,-Math.PI*0.9,Math.PI*0.3);
+  ctx.strokeStyle='rgba(220,60,60,0.75)';ctx.lineWidth=1.8;ctx.setLineDash([]);ctx.stroke();
+  // punta de flecha
+  const ax=cx2+r*Math.cos(Math.PI*0.3), ay=cy2+r*Math.sin(Math.PI*0.3);
+  ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-12,ay-6);ctx.lineTo(ax-6,ay+10);ctx.closePath();
+  ctx.fillStyle='rgba(220,60,60,0.75)';ctx.fill();
+
+  // Flecha roja de retorno (hacia abajo → origen)
+  const [ox,oy]=proj(0,0,0);
+  ctx.beginPath();
+  ctx.moveTo(cvs.width/2-40,cvs.height/2+80);
+  ctx.quadraticCurveTo(cvs.width/2-100,cvs.height/2+40,ox,oy);
+  ctx.strokeStyle='rgba(220,60,60,0.6)';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Etiqueta TRAICIÓN
+  ctx.fillStyle='rgba(220,60,60,0.85)';
+  ctx.font='bold 13px Cormorant Garamond,serif';
+  ctx.fillText('TRAICIÓN',cvs.width/2-10,55);
+
+  // Nodos de personas (8 nodos)
+  const nodeLabels=['A','B','C','D','E','F','G','H'];
+  const nodes=nodeLabels.map((lbl,i)=>{
+    const theta=(i/8)*2*Math.PI;
+    const phi=i<4?Math.PI/4:3*Math.PI/4;
+    const [fx,fy,fz]=fp(theta,phi);
+    const f=i<4?1:-1;
+    return{lbl,x:fx*f,y:fy*f,z:fz*f,pos:i<4};
+  });
+  nodes.sort((a,b)=>rot3(a.x,a.y,a.z)[2]-rot3(b.x,b.y,b.z)[2]);
+  nodes.forEach(nd=>{
+    const[px,py,pz]=proj(nd.x,nd.y,nd.z);
+    const depth=Math.max(0.3,Math.min(1,(pz+2)/4));
+    const r2=Math.max(5,8*depth);
+    ctx.beginPath();ctx.arc(px,py,r2+3,0,2*Math.PI);
+    ctx.fillStyle=nd.pos?`rgba(232,96,48,${0.12*depth})`:`rgba(48,128,232,${0.12*depth})`;ctx.fill();
+    ctx.beginPath();ctx.arc(px,py,r2,0,2*Math.PI);
+    ctx.fillStyle=nd.pos?`rgba(232,96,48,${0.9*depth})`:`rgba(48,128,232,${0.9*depth})`;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.fill();ctx.stroke();
+    ctx.fillStyle=`rgba(255,255,255,${0.85*depth})`;
+    ctx.font=`bold ${Math.max(8,10*depth)}px Cormorant Garamond,serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(nd.lbl,px,py);
+  });
+
+  // ORIGEN — punto verde (el Perdón)
+  const originScale=1-sw;
+  const glowR=8+originScale*12;
+  ctx.beginPath();ctx.arc(ox,oy,glowR+6,0,2*Math.PI);
+  ctx.fillStyle=`rgba(48,200,112,${0.08+originScale*0.25})`;ctx.fill();
+  ctx.beginPath();ctx.arc(ox,oy,glowR,0,2*Math.PI);
+  ctx.fillStyle=`rgba(48,200,112,${0.3+originScale*0.6})`;ctx.fill();
+  ctx.beginPath();ctx.arc(ox,oy,5,0,2*Math.PI);
+  ctx.fillStyle='rgba(80,230,140,0.98)';ctx.fill();
+
+  // Etiqueta origen
+  ctx.fillStyle=`rgba(80,220,140,${0.4+originScale*0.5})`;
+  ctx.font='10px DM Mono,monospace';ctx.textAlign='center';
+  ctx.fillText('(0,0,0)',ox,oy-16);
+  ctx.fillText('Perdón',ox,oy-27);
+
+  // Etiquetas de octantes
+  [
+    [1,1,1,'O1'],[-1,1,1,'O2'],[-1,-1,1,'O3'],[1,-1,1,'O4'],
+    [1,1,-1,'O5'],[-1,1,-1,'O6'],[-1,-1,-1,'O7'],[1,-1,-1,'O8']
+  ].forEach(([ox2,oy2,oz2,lbl])=>{
+    const[px,py]=proj(ox2*1.28,oy2*1.28,oz2*1.28);
+    ctx.fillStyle='rgba(130,110,170,0.35)';ctx.font='9px DM Mono,monospace';
+    ctx.textAlign='center';ctx.fillText(lbl,px,py);
+  });
+}
+
+function animate(){
+  t+=0.014;
+  draw();
+  af=requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
