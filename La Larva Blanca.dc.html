@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f5efe6"/><text x="50" y="58" font-size="30" text-anchor="middle" fill="#4a9fd8" font-family="Georgia,serif">L</text></svg></template>
+<style>
+  body{margin:0;background:oklch(0.97 0.01 75);}
+  a{color:oklch(0.45 0.09 40);}
+  a:hover{color:oklch(0.35 0.09 40);}
+</style>
+</helmet>
+<div style="font-family:Helvetica,Arial,sans-serif;color:oklch(0.24 0.02 60);max-width:720px;margin:0 auto;padding:64px 32px 120px;">
+
+  <a href="Mapa de Recorrido.dc.html" style="font-size:13px;font-weight:700;letter-spacing:0.03em;">← Volver al Mapa de Recorrido</a>
+
+  <div style="text-align:center;margin:44px 0 40px;">
+    <div style="font-family:Georgia,serif;font-size:13px;letter-spacing:0.18em;color:#4a9fd8;font-weight:700;text-transform:uppercase;margin-bottom:14px;">E-book transversal · Todos los pilares · integra M1 · M2 · M3</div>
+    <div style="font-family:Georgia,serif;font-size:38px;line-height:1.2;margin-bottom:14px;">La Larva Blanca</div>
+    <div style="font-size:17px;font-style:italic;color:oklch(0.42 0.02 60);margin-bottom:26px;">Un viaje hacia el backstage del alma</div>
+    <div style="font-size:13px;color:oklch(0.55 0.03 60);">María José Tardón García · Narrativa viva, inspirada en memoria, sueños y verdad emocional · @efdalma · efdalma.org</div>
+  </div>
+
+  <div style="display:flex;justify-content:center;margin-bottom:56px;">
+    <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 24px;border-radius:16px;border:2px solid #4a9fd8;background:#cfeafd;">
+        <audio ref="{{ audioRef }}" onEnded="{{ onAudioEnded }}" controls="true" style="width:280px;"></audio>
+        <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#3a7fb8;font-weight:700;">
+          <button onClick="{{ prevPart }}" disabled="{{ isFirstPart }}" style="border:none;background:none;color:#3a7fb8;cursor:pointer;font-size:13px;font-weight:700;">◀ Anterior</button>
+          <span>Parte {{ partLabel }} de {{ totalParts }} · voz de Pepa</span>
+          <button onClick="{{ nextPart }}" disabled="{{ isLastPart }}" style="border:none;background:none;color:#3a7fb8;cursor:pointer;font-size:13px;font-weight:700;">Siguiente ▶</button>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ locked }}" hint-placeholder-val="{{ true }}">
+      <div style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;letter-spacing:0.03em;padding:12px 26px;border-radius:999px;border:2px solid oklch(0.8 0.02 60);color:oklch(0.55 0.02 60);">🔒 Audio disponible tras la compra</div>
+    </sc-if>
+  </div>
+
+  <div style="font-size:18px;line-height:1.7;font-style:italic;color:oklch(0.32 0.02 60);">
+    <p>"Desperté con la sensación de haber visto algo que no debía ver."</p>
+  </div>
+  <div style="margin:28px 0 8px;padding:24px 26px;border-radius:12px;background:#cfeafd;text-align:center;font-family:Georgia,serif;font-size:19px;line-height:1.5;">El silencio no borra — comprime. Y lo comprimido busca salida.</div>
+
+  <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <sc-for list="{{ capitulos }}" as="cap" hint-placeholder-count="8">
+      <div style="margin-top:56px;padding-top:44px;border-top:1px solid oklch(0.85 0.02 60);">
+        <div style="font-size:13px;letter-spacing:0.16em;font-weight:700;text-transform:uppercase;color:#4a9fd8;margin-bottom:8px;">{{ cap.num }}</div>
+        <div style="font-family:Georgia,serif;font-size:24px;margin-bottom:6px;">{{ cap.titulo }}</div>
+        <div style="font-size:15px;font-style:italic;color:oklch(0.45 0.02 60);margin-bottom:18px;">{{ cap.subtitulo }}</div>
+        <div style="font-size:16.5px;line-height:1.8;">
+          <sc-for list="{{ cap.paragraphs }}" as="p" hint-placeholder-count="3">
+            <p>{{ p }}</p>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin-top:56px;padding:32px 30px;border-radius:12px;background:#cfeafd;text-align:center;">
+    <div style="font-family:Georgia,serif;font-size:20px;line-height:1.5;">"La semilla de la esperanza no necesita que la fruta esté lista para creer en ella. Solo necesita tierra honesta y el tiempo suficiente para ser."</div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <a href="Mapa de Recorrido.dc.html" style="font-size:14px;font-weight:700;">Volver al Mapa de Recorrido →</a>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ locked }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative;margin-top:40px;border-radius:16px;overflow:hidden;">
+    <div style="position:absolute;inset:0;filter:blur(7px);opacity:0.55;pointer-events:none;user-select:none;padding:20px 0;overflow:hidden;">
+      <div style="font-family:Georgia,serif;font-size:19px;margin:16px 0;">Capítulo Uno · Las familias que aprenden a callar</div>
+      <div style="font-family:Georgia,serif;font-size:19px;margin:16px 0;">Capítulo Dos · El personaje</div>
+      <div style="font-family:Georgia,serif;font-size:19px;margin:16px 0;">Capítulo Tres · La verdad tiene cuerpo</div>
+      <div style="font-family:Georgia,serif;font-size:19px;margin:16px 0;">Capítulo Cuatro · El backstage</div>
+      <div style="font-family:Georgia,serif;font-size:19px;margin:16px 0;">Capítulo Cinco, Seis · El texto · Epílogo · La Semilla</div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(oklch(0.97 0.01 75 / 0.2), oklch(0.97 0.01 75 / 0.85));padding:32px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:12px;">🔒</div>
+      <div style="font-family:Georgia,serif;font-size:24px;margin-bottom:10px;">Contenido completo bloqueado</div>
+      <div style="font-size:15px;color:oklch(0.4 0.02 60);max-width:420px;line-height:1.6;margin-bottom:26px;">Los ocho capítulos completos y el audio narrado por Pepa se desbloquean con la compra.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;">
+        <a href="https://mpago.la/2NXkQvh" target="_blank" style="display:inline-block;font-size:14px;font-weight:700;letter-spacing:0.03em;padding:14px 28px;border-radius:999px;background:#4a9fd8;color:white;text-decoration:none;">Chile · Mercado Pago — $11.990 →</a>
+        <a href="https://www.paypal.com/ncp/payment/SMA9B4Q5TMENU" target="_blank" style="display:inline-block;font-size:14px;font-weight:700;letter-spacing:0.03em;padding:14px 28px;border-radius:999px;background:#003087;color:white;text-decoration:none;">🌍 PayPal — US$13 (extranjero) →</a>
+      </div>
+      <div style="font-size:13px;color:oklch(0.45 0.02 60);margin-bottom:10px;">¿Ya compraste? Ingresa el código que te enviamos por email</div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" placeholder="Código de acceso" value="{{ codeInput }}" onChange="{{ onCodeChange }}" style="padding:10px 14px;border-radius:8px;border:1px solid oklch(0.8 0.02 60);font-size:14px;width:180px;">
+        <button onClick="{{ tryUnlock }}" style="padding:10px 18px;border-radius:8px;border:none;background:oklch(0.3 0.02 60);color:white;font-size:14px;font-weight:700;cursor:pointer;">Desbloquear</button>
+      </div>
+      <sc-if value="{{ codeError }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:13px;color:#b8433a;margin-top:10px;">Código incorrecto. Revisa tu email de confirmación de compra.</div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="margin-top:64px;text-align:center;font-size:13px;color:oklch(0.55 0.03 60);letter-spacing:0.02em;">
+    La Larva Blanca · E-book transversal · Espejos y Fractales del Alma<br>
+    © 2026 Espejos y Fractales del Alma. Este material es de uso personal. Si llegó a ti por otro camino, encuéntranos en @efdalma y efdalma.org.
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { audioPart: 1, codeInput: '', codeError: false, unlocked: false, validCodes: [] };
+  GUIDE_ID = 'larva-blanca';
+  TOTAL_PARTS = 4;
+  audioRef = React.createRef();
+
+  componentDidMount() {
+    if (localStorage.getItem('sca_unlock_larva_blanca') === 'true') this.setState({ unlocked: true });
+    import('./access-codes.js').then(m => this.setState({ validCodes: [...(m.accessCodes[this.GUIDE_ID] || []), ...(m.accessCodes.universal || [])].map(e => (typeof e === 'string' ? e : e.code)) })).catch(() => {});
+    this.updateAudioSrc();
+  }
+
+  componentDidUpdate() {
+    this.updateAudioSrc();
+  }
+
+  updateAudioSrc() {
+    if (!this.audioRef.current) return;
+    const src = 'assets/larva-blanca-audio-' + this.state.audioPart + '.mp3';
+    if (this.audioRef.current.getAttribute('src') !== src) this.audioRef.current.setAttribute('src', src);
+  }
+
+  renderVals() {
+    const onCodeChange = (e) => this.setState({ codeInput: e.target.value, codeError: false });
+    const tryUnlock = () => {
+      const entered = this.state.codeInput.trim().toUpperCase();
+      if (this.state.validCodes.map(c => c.toUpperCase()).includes(entered)) {
+        localStorage.setItem('sca_unlock_larva_blanca', 'true');
+        this.setState({ unlocked: true, codeError: false });
+      } else {
+        this.setState({ codeError: true });
+      }
+    };
+
+    const capitulos = [
+      { num: 'Capítulo Uno', titulo: 'Las familias que aprenden a callar', subtitulo: 'o los secretos que cambian de forma pero nunca desaparecen', paragraphs: [
+        'Hay familias donde las personas dejan de hablarse. Y hay otras donde dejan de existir emocionalmente unas para otras mucho antes de admitirlo. En la nuestra ocurrieron ambas cosas.',
+        'Los secretos familiares nunca desaparecen. Solo cambian de forma. El silencio familiar no borra — comprime. Y lo comprimido busca salida 10, 20, 50 años después. Ese es el fractal: la misma respuesta en generaciones distintas, con distintos disfraces.',
+        'Mi hermana eligió sobrevivir como si nada hubiera pasado. Mi madre eligió continuar. Yo elegí entender. Ese fue mi problema. Porque entender demasiado puede transformarse en una forma lenta de romperse — especialmente cuando nadie a tu alrededor entiende de qué hablas.',
+        '"¿Cuál abuso? Eso no es tema." Así responde el personaje cuando alguien intenta abrir la puerta. No porque no sepa. Sino porque saber implicaría dejar de funcionar.'
+      ]},
+      { num: 'Capítulo Dos', titulo: 'El personaje', subtitulo: 'o lo que el mundo premia y el alma no puede sostener', paragraphs: [
+        'Una amiga me dijo algo que no he podido olvidar: hay personas que logran esconder partes de la vida debajo de la alfombra y vivir desde un personaje. Y no solo esconderlas — llegan a meterse tan adentro del personaje que terminan creyendo fehacientemente que lo son.',
+        'Comprendí que quizás el verdadero problema era descubrir que yo nunca aprendí a convertirme completamente en personaje. Nunca aprendí a mirar hacia otro lado sin sentir que mi cuerpo lo sabía.',
+        'Quizás todos sobrevivimos como podemos. Unos niegan. Otros racionalizan. Otros trabajan hasta agotarse. Otros enferman. Otros escriben libros. Y algunos lloran una semana completa después de hablar con su hermana por primera vez en años.'
+      ]},
+      { num: 'Capítulo Tres', titulo: 'La verdad tiene cuerpo', subtitulo: 'o lo que el cuerpo sabe antes que la mente', paragraphs: [
+        'Durante mucho tiempo creí que la verdad era una idea. Pero la verdad tiene cuerpo. Se instala en la mandíbula. En el estómago. En los oídos. En el pecho. En los sueños. Por eso lloré sin poder detenerme — no porque estuviera descubriendo algo nuevo, sino porque el cuerpo finalmente estaba dejando de sostener ciertos silencios.',
+        'Las larvas no mueren mientras la puerta está cerrada. Esperan. Crecen en la oscuridad. Y cuando finalmente reciben atención, se activan. Hay que sacarlas. No siempre con gracia. No siempre sin susto.',
+        'No recordaba que habíamos dejado de hablarnos en 2016. Una parte de mi mente se había quedado pegada ahí, como si el tiempo no pasara. Pero esa semana tomé consciencia: 10 años, que mi personaje sentía como días, pero mi cuerpo no.'
+      ]},
+      { num: 'Capítulo Cuatro', titulo: 'El backstage', subtitulo: 'o lo que vive detrás del escenario', paragraphs: [
+        'Con el tiempo entendí que muchas personas no solo esconden recuerdos. También esconden significados. Porque a veces ni siquiera es lo que ocurrió de facto lo que destruye. Es aquello que quedó viviendo adentro de los hechos: la interpretación, la confusión, la vergüenza, la identidad que se construyó después.',
+        'El backstage es ese lugar donde nadie actúa realmente. Donde el maquillaje emocional se cae. Donde la conciencia reconoce: "hay algo aquí que todavía duele".',
+        'Rebelarse no siempre significa gritar. A veces rebelarse es simplemente dejar de actuar. Abrir la puerta da miedo porque una parte cree que detrás solo existe destrucción. Pero a veces detrás de la puerta no hay monstruos. Solo una persona agotada de fingir que nunca tuvo miedo. Y una larva blanca que llevaba años esperando que alguien la viera.'
+      ]},
+      { num: 'Capítulo Cinco', titulo: 'Eso era todo', subtitulo: 'o la pregunta simple que sí tenía respuesta', paragraphs: [
+        'Después del sueño le escribí a mi madre. Tardó horas en responder. Cuando lo hizo, escribió lo que siempre escribe: no entiendo mucho lo que leí pero siempre te amaré, cuenta conmigo, soy tu madre para todo lo que deseas.',
+        'Le pregunté: ¿y qué tienes para darme? Me respondió: todo mi amor y mi cariño. Le dije: buen chiste. No lo dije con crueldad. Lo dije con el cansancio de alguien que lleva décadas recibiendo declaraciones de amor en lugar de amor concreto.',
+        'Entonces le pregunté algo simple: ¿cómo están mis hermanos? Tardó cuatro horas. Su respuesta fue: están bien con sus familias. Eso era todo. Y era suficiente para cerrar un capítulo.'
+      ]},
+      { num: 'Capítulo Seis', titulo: 'Los estados del agua', subtitulo: 'o la química de lo que estaba listo para transformarse', paragraphs: [
+        'Hay algo que la química sabe y que el alma tarda años en aprender: la materia no desaparece. Solo cambia de estado. Lo sólido se vuelve líquido. Lo líquido se vuelve gas. Y el gas — invisible, sin forma, sin contenedor — sigue siendo materia. Sigue siendo real.',
+        'En francés, la mer es el mar. Y la mère es la madre. Se pronuncian igual. El idioma lo supo antes que yo: el mar y la madre son la misma cosa. Lo inmenso que da vida y aterra. Lo que no puedes controlar pero del que vienes.',
+        'Los estados de la materia no son metáfora. Son física real aplicada al alma: sólido — los silencios que se endurecen; líquido — las lágrimas, lo que fluye cuando algo se deshiela; gaseoso — la presión que no tiene forma, lo que busca salida por donde puede.'
+      ]},
+      { num: 'El texto', titulo: 'La metáfora que se escondía adentro', subtitulo: 'un texto fiel copia de lo que llegó desde adentro, antes de partir a España', paragraphs: [
+        'Muchos lo leyeron como una despedida definitiva. Pero el texto tenía otra cosa adentro — una metáfora que solo se ve cuando se lee desde el Sistema Científico del Alma. "Soy una suicida consciente" — el personaje que se construyó para sobrevivir está siendo disuelto, con conciencia, con intención. No el alma. El personaje.',
+        '"La materia tiene un mejor propósito en el desecho" — como los bidones de agua estancada. Desechar no es destruir. Es liberar la materia para que encuentre su siguiente estado. "Yo quiero morir en paz" — quiero que muera lo que me ha tenido en guerra: la culpa, la soledad instalada como programa, la versión de mí que sobrevivía en lugar de vivir.',
+        'No todo nacimiento es suave. Todo nacimiento también es destrucción. Lo que nace rompe lo que lo contenía. La semilla destruye su cáscara. Eso no es muerte. Es el precio exacto de nacer.'
+      ]},
+      { num: 'Epílogo · La Semilla', titulo: 'La Esperanza', subtitulo: 'o lo que encontré cuando dejé de buscar lo que creía que necesitaba', paragraphs: [
+        'No hay suicidio en reconocer que algo tiene que morir para que otra cosa nazca. Hay honestidad. Y a veces esa honestidad asusta más que cualquier otra cosa. Las cosas no suceden cuando el personaje quiere. Suceden cuando el alma está lista.',
+        'Saqué La Esperanza. No la esperanza blanda. No la pereza disfrazada de espiritualidad. La otra. La que trabaja. La que planta y espera y confía en que el tiempo no es el enemigo — es el cultivo.',
+        'Antes de crear cualquier cosa hay que poder responderse cuatro preguntas con honestidad real: ¿Qué quiero? ¿Por qué lo quiero? ¿Para qué lo quiero? ¿Desde dónde lo quiero? La última es la más importante. El deseo verdadero viene desde el alma. Y el alma no tiene prisa.',
+        'El Edén no es un lugar al que se vuelve. Es un estado al que se accede cuando se deja de correr. Cuando el personaje descansa. Cuando el alma reconoce que no necesita reparación — necesita reconocimiento.'
+      ]},
+    ];
+
+    const audioPart = this.state.audioPart;
+    const setPart = (n) => {
+      this.setState({ audioPart: n });
+      setTimeout(() => { if (this.audioRef.current) this.audioRef.current.play().catch(() => {}); }, 50);
+    };
+
+    return {
+      audioRef: this.audioRef,
+      partLabel: audioPart,
+      totalParts: this.TOTAL_PARTS,
+      isFirstPart: audioPart <= 1,
+      isLastPart: audioPart >= this.TOTAL_PARTS,
+      prevPart: () => audioPart > 1 && setPart(audioPart - 1),
+      nextPart: () => audioPart < this.TOTAL_PARTS && setPart(audioPart + 1),
+      onAudioEnded: () => { if (audioPart < this.TOTAL_PARTS) setPart(audioPart + 1); },
+      capitulos,
+      unlocked: this.state.unlocked, locked: !this.state.unlocked,
+      onCodeChange, tryUnlock, codeInput: this.state.codeInput, codeError: this.state.codeError,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
