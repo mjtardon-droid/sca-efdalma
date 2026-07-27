@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fukuda 8 Octantes</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#050810; overflow:hidden; font-family:'Segoe UI',sans-serif; color:white; }
+canvas { display:block; }
+
+#title {
+  position:fixed; top:10px; left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,.75); backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1); border-radius:12px;
+  padding:6px 20px; text-align:center; pointer-events:none; z-index:10; white-space:nowrap;
+}
+#title .main { font-size:13px; color:#ffe; font-weight:bold; letter-spacing:1px; }
+#title .sub  { font-size:9px; color:#444; margin-top:1px; }
+
+/* INSET WINDOW - what the free observer sees */
+#inset {
+  position:fixed; top:60px; right:14px;
+  width:160px; background:rgba(3,6,16,.92);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,215,0,.25); border-radius:12px;
+  padding:10px; z-index:15; pointer-events:none;
+}
+#inset .ititle {
+  font-size:10px; color:#ffd700; font-weight:bold;
+  text-align:center; letter-spacing:.5px; margin-bottom:6px;
+}
+#inset canvas { border-radius:8px; display:block; background:#070c1a; }
+#inset .ishape {
+  font-size:10px; text-align:center; margin-top:6px;
+  color:#aaa; min-height:14px;
+}
+#inset .ishape span { font-weight:bold; }
+
+#bar {
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(3,5,12,.97); backdrop-filter:blur(14px);
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:8px 14px 12px;
+  display:flex; flex-wrap:wrap; align-items:center; gap:7px 12px;
+  z-index:20;
+}
+.tog { display:flex; align-items:center; gap:5px; font-size:11px; white-space:nowrap; }
+.tog input { display:none; }
+.sw {
+  width:28px; height:15px; border-radius:8px; background:#161622;
+  position:relative; cursor:pointer; border:1px solid #2a2a3a;
+  transition:background .2s; flex-shrink:0;
+}
+.sw::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:9px; height:9px; border-radius:50%; background:#3a3a4a; transition:.2s;
+}
+input:checked + .sw { background:var(--c); border-color:var(--c); }
+input:checked + .sw::after { left:15px; background:white; }
+.dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.sep { width:1px; height:22px; background:rgba(255,255,255,.06); }
+.sldr { display:flex; align-items:center; gap:4px; font-size:10px; }
+.sldr label { color:#aaa; white-space:nowrap; }
+.sldr input[type=range] { width:58px; cursor:pointer; }
+.sldr.free label { color:#ffd700; }
+.sldr.free input[type=range] { accent-color:#ffd700; }
+.sldr.spd  input[type=range] { accent-color:#8866ff; }
+.free-sep { width:2px; height:22px; background:rgba(255,215,0,.25); border-radius:2px; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="title">
+  <div class="main">&#10022; FUKUDA &middot; 8 OCTANTES</div>
+  <div class="sub">Mismo objeto &middot; proyecciones distintas segun el observador</div>
+</div>
+
+<!-- Live projection inset -->
+<div id="inset">
+  <div class="ititle">&#9788; OBSERVADOR LIBRE</div>
+  <canvas id="ic" width="138" height="138"></canvas>
+  <div class="ishape" id="ishapetxt">Mueve Azimut / Elev.</div>
+</div>
+
+<div id="bar">
+  <!-- Fixed planes -->
+  <div class="tog">
+    <span class="dot" style="background:#4499ff"></span><span>XY circulo</span>
+    <label><input type="checkbox" id="cXY" checked><div class="sw" style="--c:#4499ff"></div></label>
+  </div>
+  <div class="sep"></div>
+  <div class="tog">
+    <span class="dot" style="background:#44ffaa"></span><span>XZ cuadrado</span>
+    <label><input type="checkbox" id="cXZ" checked><div class="sw" style="--c:#44ffaa"></div></label>
+  </div>
+  <div class="sep"></div>
+  <div class="tog">
+    <span class="dot" style="background:#ff8844"></span><span>YZ triangulo</span>
+    <label><input type="checkbox" id="cYZ" checked><div class="sw" style="--c:#ff8844"></div></label>
+  </div>
+  <div class="sep"></div>
+  <div class="tog">
+    <span>Rayos</span>
+    <label><input type="checkbox" id="cRay" checked><div class="sw" style="--c:#aaa"></div></label>
+  </div>
+  <div class="sep"></div>
+  <div class="tog">
+    <span>Obs.fijos</span>
+    <label><input type="checkbox" id="cEye" checked><div class="sw" style="--c:#cc99ff"></div></label>
+  </div>
+
+  <div class="free-sep"></div>
+
+  <!-- Free observer controls -->
+  <div class="tog">
+    <span style="color:#ffd700;font-weight:bold;">&#9788; Libre</span>
+    <label><input type="checkbox" id="cFree" checked><div class="sw" style="--c:#ffd700"></div></label>
+  </div>
+  <div class="sldr free">
+    <label>Az</label>
+    <input type="range" id="sAz" min="-180" max="180" value="45">
+  </div>
+  <div class="sldr free">
+    <label>Elev</label>
+    <input type="range" id="sEl" min="-85" max="85" value="30">
+  </div>
+
+  <div class="sep"></div>
+  <div class="sldr spd">
+    <label>&#9889;</label>
+    <input type="range" id="spd" min="0" max="10" value="3">
+  </div>
+</div>
+
+<script>
+// ── Canvas setup ─────────────────────────────
+var cv  = document.getElementById('c');
+var ctx = cv.getContext('2d');
+var ic  = document.getElementById('ic');
+var ictx= ic.getContext('2d');
+var W, H;
+function rs() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+rs(); window.addEventListener('resize', rs);
+
+// ── Camera ────────────────────────────────────
+var rx=0.38, ry=0.50, zm=1, drag=false, lx=0, ly=0;
+cv.addEventListener('mousedown',function(e){drag=true;lx=e.clientX;ly=e.clientY;});
+window.addEventListener('mousemove',function(e){
+  if(!drag)return;
+  ry+=(e.clientX-lx)*0.009; rx+=(e.clientY-ly)*0.009;
+  if(rx>1.4)rx=1.4; if(rx<-1.4)rx=-1.4;
+  lx=e.clientX; ly=e.clientY;
+});
+window.addEventListener('mouseup',function(){drag=false;});
+cv.addEventListener('wheel',function(e){
+  zm*=e.deltaY>0?0.92:1.08;
+  if(zm<0.3)zm=0.3; if(zm>4)zm=4;
+});
+cv.addEventListener('touchstart',function(e){drag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY;});
+cv.addEventListener('touchmove',function(e){
+  e.preventDefault();
+  ry+=(e.touches[0].clientX-lx)*0.012; rx+=(e.touches[0].clientY-ly)*0.012;
+  lx=e.touches[0].clientX; ly=e.touches[0].clientY;
+},{passive:false});
+cv.addEventListener('touchend',function(){drag=false;});
+
+// ── 3D projection ─────────────────────────────
+function proj(pt){
+  var x=pt[0],y=pt[1],z=pt[2];
+  var cy=Math.cos(ry),sy=Math.sin(ry);
+  var cx=Math.cos(rx),sx=Math.sin(rx);
+  var x1=x*cy-z*sy, z1=x*sy+z*cy;
+  var y1=y*cx-z1*sx, z2=y*sx+z1*cx;
+  var sc=zm*Math.min(W,H)*0.175, p=7/(7+z2*0.18);
+  return [W/2+x1*sc*p, H/2-y1*sc*p, z2];
+}
+
+// ── Fukuda point cloud ────────────────────────
+var R=0.62, cloud=[], attempts=0;
+while(cloud.length<780 && attempts<780*900){
+  attempts++;
+  var tx=(Math.random()*2-1)*R;
+  var ty=(Math.random()*2-1)*R;
+  var tz=(Math.random()*2-1)*R;
+  if(tx*tx+ty*ty>R*R) continue;
+  if(tz<-R||tz>2*ty+R||tz>-2*ty+R) continue;
+  cloud.push([tx,ty,tz]);
+}
+var rayPts=[];
+for(var ri=0;ri<cloud.length;ri+=25){ if(rayPts.length<22) rayPts.push(cloud[ri]); }
+
+// ── 3D math helpers ───────────────────────────
+function dot(a,b){ return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]; }
+function cross(a,b){
+  return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+}
+function norm(v){
+  var l=Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
+  return l>0?[v[0]/l,v[1]/l,v[2]/l]:[0,1,0];
+}
+
+// ── Free observer: get position from sliders ──
+function getFreePos(){
+  var az=parseFloat(document.getElementById('sAz').value)*Math.PI/180;
+  var el=parseFloat(document.getElementById('sEl').value)*Math.PI/180;
+  var d=2.1*0.82;
+  return [d*Math.cos(el)*Math.sin(az), d*Math.sin(el), d*Math.cos(el)*Math.cos(az)];
+}
+
+// Project cloud from observer's viewpoint → 2D points
+function projectFromObserver(obsPos){
+  var dir=norm([-obsPos[0],-obsPos[1],-obsPos[2]]);
+  var up=[0,1,0];
+  if(Math.abs(dot(dir,up))>0.98) up=[1,0,0];
+  var right=norm(cross(up,dir));
+  var tup=norm(cross(dir,right));
+  return cloud.map(function(p){
+    return [dot(p,right), dot(p,tup)];
+  });
+}
+
+// Detect if observer is near an axis → identify shape
+function detectShape(obsPos){
+  var p=norm(obsPos);
+  var ax=Math.abs(p[0]), ay=Math.abs(p[1]), az2=Math.abs(p[2]);
+  var thresh=0.90;
+  if(az2>thresh) return {name:'CIRCULO',col:'#4499ff'};
+  if(ay>thresh)  return {name:'CUADRADO',col:'#44ffaa'};
+  if(ax>thresh)  return {name:'TRIANGULO',col:'#ff8844'};
+  // Near diagonals
+  var max2=Math.max(ax,ay,az2);
+  if(max2<0.72)  return {name:'DIAGONAL PURA (blob)',col:'#ff6666'};
+  return {name:'TRANSICION...',col:'#aaaaaa'};
+}
+
+// Draw the inset "what free observer sees"
+function drawInset(obsPos){
+  var IW=138, IH=138;
+  ictx.clearRect(0,0,IW,IH);
+  // Background gradient
+  var bg=ictx.createRadialGradient(IW/2,IH/2,0,IW/2,IH/2,IW/2);
+  bg.addColorStop(0,'#0a1020'); bg.addColorStop(1,'#040810');
+  ictx.fillStyle=bg; ictx.fillRect(0,0,IW,IH);
+
+  var pts2d=projectFromObserver(obsPos);
+  var scale=IW*0.36;
+  var cx=IW/2, cy=IH/2;
+
+  // Reference shapes (faint outlines showing "ideal")
+  var shape=detectShape(obsPos);
+
+  // Faint ideal circles/squares/triangles as reference
+  ictx.save();
+  ictx.globalAlpha=0.08; ictx.strokeStyle='#4499ff'; ictx.lineWidth=1;
+  ictx.setLineDash([3,3]);
+  ictx.beginPath();
+  for(var i=0;i<=60;i++){var t=i/60*Math.PI*2; ictx.lineTo(cx+Math.cos(t)*R*scale,cy-Math.sin(t)*R*scale);}
+  ictx.stroke();
+  ictx.globalAlpha=0.08; ictx.strokeStyle='#44ffaa';
+  ictx.beginPath(); ictx.rect(cx-R*scale,cy-R*scale,2*R*scale,2*R*scale); ictx.stroke();
+  ictx.globalAlpha=0.08; ictx.strokeStyle='#ff8844';
+  ictx.beginPath(); ictx.moveTo(cx,cy-R*scale); ictx.lineTo(cx-R*scale,cy+R*scale); ictx.lineTo(cx+R*scale,cy+R*scale); ictx.closePath(); ictx.stroke();
+  ictx.restore();
+
+  // Crosshair
+  ictx.save();
+  ictx.strokeStyle='#ffffff'; ictx.lineWidth=0.4; ictx.globalAlpha=0.12;
+  ictx.beginPath(); ictx.moveTo(cx,4); ictx.lineTo(cx,IH-4); ictx.stroke();
+  ictx.beginPath(); ictx.moveTo(4,cy); ictx.lineTo(IW-4,cy); ictx.stroke();
+  ictx.restore();
+
+  // Point cloud glow
+  ictx.save();
+  ictx.globalAlpha=0.07; ictx.fillStyle='#99bbff';
+  pts2d.forEach(function(p){
+    ictx.beginPath(); ictx.arc(cx+p[0]*scale,cy-p[1]*scale,4,0,Math.PI*2); ictx.fill();
+  });
+  // Core dots
+  ictx.globalAlpha=0.85; ictx.fillStyle='#ddeeff';
+  pts2d.forEach(function(p){
+    ictx.beginPath(); ictx.arc(cx+p[0]*scale,cy-p[1]*scale,1.5,0,Math.PI*2); ictx.fill();
+  });
+  ictx.restore();
+
+  // Border glow matching detected shape
+  ictx.save();
+  ictx.strokeStyle=shape.col; ictx.lineWidth=1.5; ictx.globalAlpha=0.4;
+  ictx.beginPath(); ictx.roundRect(1,1,IW-2,IH-2,8); ictx.stroke();
+  ictx.restore();
+
+  // Update label
+  var el=document.getElementById('ishapetxt');
+  el.innerHTML='Ve: <span style="color:'+shape.col+'">'+shape.name+'</span>';
+}
+
+// ── Panel quadrants (12 total) ────────────────
+var S=2.0;
+var PANELS=[];
+var signs=[[-1,-1],[-1,1],[1,-1],[1,1]];
+for(var pi=0;pi<4;pi++){
+  var sx=signs[pi][0],sy=signs[pi][1];
+  PANELS.push({corners:[[0,0,0],[sx*S,0,0],[sx*S,sy*S,0],[0,sy*S,0]],col:'#4499ff',axis:'XY'});
+}
+for(var pi=0;pi<4;pi++){
+  var sx=signs[pi][0],szz=signs[pi][1];
+  PANELS.push({corners:[[0,0,0],[sx*S,0,0],[sx*S,0,szz*S],[0,0,szz*S]],col:'#44ffaa',axis:'XZ'});
+}
+for(var pi=0;pi<4;pi++){
+  var sy2=signs[pi][0],sz2=signs[pi][1];
+  PANELS.push({corners:[[0,0,0],[0,sy2*S,0],[0,sy2*S,sz2*S],[0,0,sz2*S]],col:'#ff8844',axis:'YZ'});
+}
+
+function drawQuadPanel(p){
+  var c=p.corners,col=p.col;
+  ctx.save();
+  ctx.beginPath();
+  for(var i=0;i<c.length;i++){var pp=proj(c[i]);if(i===0)ctx.moveTo(pp[0],pp[1]);else ctx.lineTo(pp[0],pp[1]);}
+  ctx.closePath();
+  ctx.fillStyle=col+'0e'; ctx.fill();
+  ctx.strokeStyle=col+'22'; ctx.lineWidth=0.6; ctx.stroke();
+  ctx.globalAlpha=0.06; ctx.strokeStyle=col; ctx.lineWidth=0.5;
+  var ts=[0.25,0.5,0.75];
+  for(var ti=0;ti<ts.length;ti++){
+    var t=ts[ti];
+    var p1=[c[0][0]*(1-t)+c[1][0]*t,c[0][1]*(1-t)+c[1][1]*t,c[0][2]*(1-t)+c[1][2]*t];
+    var p2=[c[3][0]*(1-t)+c[2][0]*t,c[3][1]*(1-t)+c[2][1]*t,c[3][2]*(1-t)+c[2][2]*t];
+    var p3=[c[0][0]*(1-t)+c[3][0]*t,c[0][1]*(1-t)+c[3][1]*t,c[0][2]*(1-t)+c[3][2]*t];
+    var p4=[c[1][0]*(1-t)+c[2][0]*t,c[1][1]*(1-t)+c[2][1]*t,c[1][2]*(1-t)+c[2][2]*t];
+    var pp1=proj(p1),pp2=proj(p2),pp3=proj(p3),pp4=proj(p4);
+    ctx.beginPath();ctx.moveTo(pp1[0],pp1[1]);ctx.lineTo(pp2[0],pp2[1]);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(pp3[0],pp3[1]);ctx.lineTo(pp4[0],pp4[1]);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawRays(axis,col){
+  ctx.save();
+  ctx.strokeStyle=col; ctx.lineWidth=0.7; ctx.globalAlpha=0.13; ctx.setLineDash([3,5]);
+  for(var i=0;i<rayPts.length;i++){
+    var x=rayPts[i][0],y=rayPts[i][1],z=rayPts[i][2];
+    var t=axis==='XY'?[x,y,0]:axis==='XZ'?[x,0,z]:[0,y,z];
+    var a=proj([x,y,z]),b=proj(t);
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function shadowCircle(col){
+  ctx.save(); ctx.beginPath();
+  for(var i=0;i<=90;i++){var t=i/90*Math.PI*2;var pp=proj([R*Math.cos(t),R*Math.sin(t),0]);if(i===0)ctx.moveTo(pp[0],pp[1]);else ctx.lineTo(pp[0],pp[1]);}
+  ctx.fillStyle=col+'3d'; ctx.fill();
+  ctx.strokeStyle=col; ctx.lineWidth=2.2; ctx.shadowColor=col; ctx.shadowBlur=8; ctx.stroke();
+  ctx.restore();
+}
+function shadowSquare(col){
+  var v=[[-R,0,-R],[R,0,-R],[R,0,R],[-R,0,R]];
+  ctx.save(); ctx.beginPath();
+  for(var i=0;i<v.length;i++){var pp=proj(v[i]);if(i===0)ctx.moveTo(pp[0],pp[1]);else ctx.lineTo(pp[0],pp[1]);}
+  ctx.closePath(); ctx.fillStyle=col+'3d'; ctx.fill();
+  ctx.strokeStyle=col; ctx.lineWidth=2.2; ctx.shadowColor=col; ctx.shadowBlur=8; ctx.stroke();
+  ctx.restore();
+}
+function shadowTriangle(col){
+  var v=[[0,0,R],[0,-R,-R],[0,R,-R]];
+  ctx.save(); ctx.beginPath();
+  for(var i=0;i<v.length;i++){var pp=proj(v[i]);if(i===0)ctx.moveTo(pp[0],pp[1]);else ctx.lineTo(pp[0],pp[1]);}
+  ctx.closePath(); ctx.fillStyle=col+'3d'; ctx.fill();
+  ctx.strokeStyle=col; ctx.lineWidth=2.2; ctx.shadowColor=col; ctx.shadowBlur=8; ctx.stroke();
+  ctx.restore();
+}
+
+function planeLabel(worldPos,text,col){
+  var pp=proj(worldPos);
+  ctx.save(); ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+  var tw=ctx.measureText(text).width;
+  ctx.fillStyle='rgba(2,4,12,0.75)'; ctx.fillRect(pp[0]-tw/2-5,pp[1]-13,tw+10,18);
+  ctx.fillStyle=col; ctx.globalAlpha=0.9; ctx.fillText(text,pp[0],pp[1]);
+  ctx.restore();
+}
+
+// Person figure
+function drawPerson(pos,col,label){
+  var pp=proj(pos); var px=pp[0],py=pp[1]; var sz=24;
+  ctx.save(); ctx.translate(px,py);
+  var g=ctx.createRadialGradient(0,0,0,0,0,sz*2.2);
+  g.addColorStop(0,col+'33'); g.addColorStop(1,col+'00');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,sz*2.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=col; ctx.strokeStyle=col; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.globalAlpha=0.92;
+  ctx.beginPath(); ctx.arc(0,-sz*0.72,sz*0.22,0,Math.PI*2); ctx.fill();
+  ctx.lineWidth=sz*0.09; ctx.globalAlpha=0.85;
+  ctx.beginPath(); ctx.moveTo(0,-sz*0.50); ctx.lineTo(0,-sz*0.38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-sz*0.20,-sz*0.38); ctx.lineTo(-sz*0.24,sz*0.10); ctx.lineTo(sz*0.24,sz*0.10); ctx.lineTo(sz*0.20,-sz*0.38); ctx.closePath(); ctx.globalAlpha=0.80; ctx.fill();
+  ctx.lineWidth=sz*0.11; ctx.globalAlpha=0.85;
+  ctx.beginPath(); ctx.moveTo(-sz*0.20,-sz*0.22); ctx.quadraticCurveTo(-sz*0.48,-sz*0.18,-sz*0.40,sz*0.08); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sz*0.20,-sz*0.22); ctx.quadraticCurveTo(sz*0.48,-sz*0.18,sz*0.40,sz*0.08); ctx.stroke();
+  ctx.lineWidth=sz*0.13; ctx.globalAlpha=0.80;
+  ctx.beginPath(); ctx.moveTo(-sz*0.08,sz*0.10); ctx.lineTo(-sz*0.16,sz*0.55); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sz*0.08,sz*0.10); ctx.lineTo(sz*0.16,sz*0.55); ctx.stroke();
+  ctx.lineWidth=sz*0.10;
+  ctx.beginPath(); ctx.moveTo(-sz*0.16,sz*0.55); ctx.lineTo(-sz*0.28,sz*0.56); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sz*0.16,sz*0.55); ctx.lineTo(sz*0.28,sz*0.56); ctx.stroke();
+  ctx.fillStyle='#000a1a'; ctx.globalAlpha=0.7;
+  ctx.beginPath(); ctx.arc(-sz*0.08,-sz*0.73,sz*0.04,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(sz*0.08,-sz*0.73,sz*0.04,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=col; ctx.globalAlpha=0.82;
+  ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
+  ctx.fillText(label,0,sz*0.78);
+  ctx.restore();
+}
+
+function drawSightLine(from,col){
+  var a=proj(from),b=proj([0,0,0]);
+  ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=0.8; ctx.globalAlpha=0.22; ctx.setLineDash([4,6]);
+  ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke(); ctx.restore();
+}
+
+// Free observer sight cone (fan of rays)
+function drawFreeCone(obsPos){
+  var pp=proj(obsPos); var op=proj([0,0,0]);
+  // A few fan rays from observer toward object
+  var dir=norm([-obsPos[0],-obsPos[1],-obsPos[2]]);
+  var up=[0,1,0];
+  if(Math.abs(dot(dir,up))>0.98) up=[1,0,0];
+  var right=norm(cross(up,dir));
+  var tup=norm(cross(dir,right));
+  ctx.save();
+  ctx.strokeStyle='#ffd700'; ctx.lineWidth=0.6; ctx.globalAlpha=0.12; ctx.setLineDash([2,5]);
+  var angles=[0,30,60,90,120,150,180,210,240,270,300,330];
+  for(var i=0;i<angles.length;i++){
+    var a=angles[i]*Math.PI/180;
+    var edgeR=R*Math.cos(a), edgeU=R*Math.sin(a);
+    var ep=[edgeR*right[0]+edgeU*tup[0], edgeR*right[1]+edgeU*tup[1], edgeR*right[2]+edgeU*tup[2]];
+    var ep2=proj(ep);
+    ctx.beginPath(); ctx.moveTo(pp[0],pp[1]); ctx.lineTo(ep2[0],ep2[1]); ctx.stroke();
+  }
+  ctx.restore();
+  // Main sight line (bold)
+  ctx.save(); ctx.strokeStyle='#ffd700'; ctx.lineWidth=1.2; ctx.globalAlpha=0.4; ctx.setLineDash([4,5]);
+  ctx.beginPath(); ctx.moveTo(pp[0],pp[1]); ctx.lineTo(op[0],op[1]); ctx.stroke(); ctx.restore();
+}
+
+function drawAxes(){
+  var as=S*0.97;
+  var axDefs=[[[-as,0,0],[as,0,0],'#ff5555','X'],[[0,-as,0],[0,as,0],'#55ff88','Y'],[[0,0,-as],[0,0,as],'#5599ff','Z']];
+  for(var i=0;i<axDefs.length;i++){
+    var from=axDefs[i][0],to=axDefs[i][1],col=axDefs[i][2],lbl=axDefs[i][3];
+    var a=proj(from),b=proj(to);
+    ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.3; ctx.globalAlpha=0.45;
+    ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+    ctx.globalAlpha=0.8; ctx.fillStyle=col; ctx.font='bold 12px sans-serif'; ctx.fillText(lbl,b[0]+5,b[1]+4);
+    var dx=b[0]-a[0],dy=b[1]-a[1],len=Math.sqrt(dx*dx+dy*dy);
+    if(len>0){var nx=dx/len,ny=dy/len; ctx.globalAlpha=0.5; ctx.beginPath(); ctx.moveTo(b[0],b[1]); ctx.lineTo(b[0]-nx*7+ny*3.5,b[1]-ny*7-nx*3.5); ctx.lineTo(b[0]-nx*7-ny*3.5,b[1]-ny*7+nx*3.5); ctx.closePath(); ctx.fill();}
+    ctx.restore();
+  }
+}
+
+var octCorners=[], octLabels=[], octEdges=[[0,1],[0,2],[0,4],[1,3],[1,5],[2,3],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7]];
+var octSigns=[-1,1];
+for(var oi=0;oi<2;oi++) for(var oj=0;oj<2;oj++) for(var ok=0;ok<2;ok++){
+  var osx=octSigns[oi],osy=octSigns[oj],osz=octSigns[ok];
+  octCorners.push([osx*1.55,osy*1.55,osz*1.55]);
+  octLabels.push({pos:[osx*1.72,osy*1.72,osz*1.72],txt:'('+(osx>0?'+':'-')+(osy>0?'+':'-')+(osz>0?'+':'-')+')'});
+}
+function drawOctants(){
+  ctx.save();
+  ctx.fillStyle='#ffffff'; ctx.globalAlpha=0.13;
+  for(var i=0;i<octCorners.length;i++){var pp=proj(octCorners[i]);ctx.beginPath();ctx.arc(pp[0],pp[1],2.2,0,Math.PI*2);ctx.fill();}
+  ctx.strokeStyle='#ffffff'; ctx.lineWidth=0.4; ctx.globalAlpha=0.05;
+  for(var i=0;i<octEdges.length;i++){var a=proj(octCorners[octEdges[i][0]]),b=proj(octCorners[octEdges[i][1]]);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();}
+  ctx.font='9px monospace'; ctx.textAlign='center'; ctx.fillStyle='#ffffff'; ctx.globalAlpha=0.15;
+  for(var i=0;i<octLabels.length;i++){var pp=proj(octLabels[i].pos);ctx.fillText(octLabels[i].txt,pp[0],pp[1]);}
+  ctx.restore();
+}
+
+function drawCloud(){
+  ctx.save();
+  ctx.globalAlpha=0.09; ctx.fillStyle='#99bbff';
+  for(var i=0;i<cloud.length;i++){var pp=proj(cloud[i]);ctx.beginPath();ctx.arc(pp[0],pp[1],5,0,Math.PI*2);ctx.fill();}
+  ctx.globalAlpha=0.88; ctx.fillStyle='#ddeeff';
+  for(var i=0;i<cloud.length;i++){var pp=proj(cloud[i]);ctx.beginPath();ctx.arc(pp[0],pp[1],1.7,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
+}
+
+// ── Main loop ─────────────────────────────────
+function frame(){
+  ctx.clearRect(0,0,W,H);
+  var bg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*0.65);
+  bg.addColorStop(0,'#0c1420'); bg.addColorStop(1,'#030508');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+  var sp=parseFloat(document.getElementById('spd').value)/360;
+  if(!drag) ry+=sp;
+
+  var sXY =document.getElementById('cXY').checked;
+  var sXZ =document.getElementById('cXZ').checked;
+  var sYZ =document.getElementById('cYZ').checked;
+  var sRay=document.getElementById('cRay').checked;
+  var sEye=document.getElementById('cEye').checked;
+  var sFree=document.getElementById('cFree').checked;
+
+  // Depth-sort panels
+  for(var i=0;i<PANELS.length;i++){
+    var c=PANELS[i].corners;
+    PANELS[i].depth=(proj(c[0])[2]+proj(c[1])[2]+proj(c[2])[2]+proj(c[3])[2])/4;
+  }
+  PANELS.sort(function(a,b){return a.depth-b.depth;});
+  for(var i=0;i<PANELS.length;i++){
+    var p=PANELS[i];
+    if(p.axis==='XY'&&!sXY) continue;
+    if(p.axis==='XZ'&&!sXZ) continue;
+    if(p.axis==='YZ'&&!sYZ) continue;
+    drawQuadPanel(p);
+  }
+
+  drawOctants();
+
+  if(sRay){
+    if(sXY) drawRays('XY','#4499ff');
+    if(sXZ) drawRays('XZ','#44ffaa');
+    if(sYZ) drawRays('YZ','#ff8844');
+  }
+
+  if(sXY){shadowCircle('#4499ff');   planeLabel([0,S*0.72,0], 'CIRCULO',   '#4499ff');}
+  if(sXZ){shadowSquare('#44ffaa');   planeLabel([S*0.72,0,0], 'CUADRADO',  '#44ffaa');}
+  if(sYZ){shadowTriangle('#ff8844'); planeLabel([0,0,S*0.72], 'TRIANGULO', '#ff8844');}
+
+  drawAxes();
+  drawCloud();
+
+  // Fixed observers
+  if(sEye){
+    var d=S*0.82;
+    if(sXY){drawSightLine([0,0, d],'#4499ff');drawPerson([0,0, d],'#4499ff','+Z');drawSightLine([0,0,-d],'#4499ff');drawPerson([0,0,-d],'#4499ff','-Z');}
+    if(sXZ){drawSightLine([0, d,0],'#44ffaa');drawPerson([0, d,0],'#44ffaa','+Y');drawSightLine([0,-d,0],'#44ffaa');drawPerson([0,-d,0],'#44ffaa','-Y');}
+    if(sYZ){drawSightLine([ d,0,0],'#ff8844');drawPerson([ d,0,0],'#ff8844','+X');drawSightLine([-d,0,0],'#ff8844');drawPerson([-d,0,0],'#ff8844','-X');}
+  }
+
+  // Free observer
+  if(sFree){
+    var obsPos=getFreePos();
+    drawFreeCone(obsPos);
+    drawPerson(obsPos,'#ffd700','LIBRE');
+    drawInset(obsPos);
+    document.getElementById('inset').style.display='block';
+  } else {
+    document.getElementById('inset').style.display='none';
+  }
+
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>
